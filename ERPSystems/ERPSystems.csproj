@@ -128,14 +128,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\PurchasingPageController.cs" />
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Controllers\AdminPageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\RequestForm.cs" />
     <Compile Include="Models\RequestItem.cs" />
+    <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -243,6 +245,11 @@
     <Content Include="Views\AdminPage\Inventory.cshtml" />
     <Content Include="Views\AdminPage\PurchaseRequest.cshtml" />
     <Content Include="Views\AdminPage\Supplier.cshtml" />
+    <Content Include="Views\Shared\_PurchasingPage.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchasingDashboard.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchasingPageRequest.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchasingPageCanvass.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchasingPageQoutation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

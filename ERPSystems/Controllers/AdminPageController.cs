@@ -17,6 +17,9 @@ namespace ERPSystems.Controllers
         List<RequestItem> requestItem = new List<RequestItem>();
         List<Account> userAccounts = new List<Account>();
         List<RequestForm> requestForm = new List<RequestForm>();
+
+      
+
         [HttpGet]
         private void connnectionString()
         {
@@ -34,11 +37,12 @@ namespace ERPSystems.Controllers
         {
             return View();
         }
-        public ActionResult PurchaseRequest()
-        {
-            
+        public ActionResult PurchaseRequest(RequestModel model)
+        {                     
             FetchRequest();
-            return View(requestForm);
+            List<RequestForm> requestForms = new List<RequestForm>();
+            model.requestform = requestForm;
+            return View(model);
         }
         public ActionResult FetchRequest()
         {
@@ -76,12 +80,21 @@ namespace ERPSystems.Controllers
             }
             return View(requestForm);
         }
-        [HttpPost]
-        public ActionResult FetchRequestItem()
+        public ActionResult ReceivedRequestItem(int id)
+        {
+            List<RequestItem> reqitem = FetchRequestItem(id);
+            RequestModel requestmodel = new RequestModel();
+            {
+                requestmodel.requestItems = reqitem;
+            };
+            return Json(requestmodel);
+        }
+        [HttpPost] 
+        private List<RequestItem> FetchRequestItem(int id)
         {
             try
             {
-                int reqid = 1;
+                int reqid = id;
                 connnectionString();
                 con.Open();
                 com.Connection = con;
@@ -92,6 +105,8 @@ namespace ERPSystems.Controllers
                     requestItem.Add(new RequestItem
                     {
                         ProdId = int.Parse(dr["ProdId"].ToString())
+                    ,
+                        ProdName = dr["ProdName"].ToString()
                     ,
                         Description = dr["ProdDescription"].ToString()
                     ,
@@ -106,8 +121,7 @@ namespace ERPSystems.Controllers
             {
                 throw;
             }
-            
-            return View("");
+           return (requestItem);
         }      
         public ActionResult Supplier()
         {
@@ -155,7 +169,8 @@ namespace ERPSystems.Controllers
         }
         [HttpPost]
         public ActionResult Account(Account acc)
-        {
+        {      
+
             int id = acc.UserID;
             string type = acc.UserType;
             try
@@ -172,7 +187,7 @@ namespace ERPSystems.Controllers
 
                 throw;
             }
-            return Redirect("Account");
+            return View("Account");
         }
     }
 }
