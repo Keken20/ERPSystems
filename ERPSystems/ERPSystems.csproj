@@ -128,7 +128,9 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustodianPageController.cs" />
     <Compile Include="Controllers\PurchasingPageController.cs" />
+    <Compile Include="Controllers\RequestorPageController.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Controllers\AdminPageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -250,6 +252,14 @@
     <Content Include="Views\PurchasingPage\PurchasingPageRequest.cshtml" />
     <Content Include="Views\PurchasingPage\PurchasingPageCanvass.cshtml" />
     <Content Include="Views\PurchasingPage\PurchasingPageQoutation.cshtml" />
+    <Content Include="Views\Shared\_CustodianPage.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianDashboard.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianPurchaseOrder.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianInventory.cshtml" />
+    <Content Include="Views\Shared\_RequestorPage.cshtml" />
+    <Content Include="Views\RequestorPage\RequestorDashboard.cshtml" />
+    <Content Include="Views\RequestorPage\RequestorRequisition.cshtml" />
+    <Content Include="Views\RequestorPage\RequestorInventory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
