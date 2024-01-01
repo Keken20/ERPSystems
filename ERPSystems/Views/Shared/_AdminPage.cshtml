@@ -19,7 +19,7 @@
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="" alt="logo">
+                    <img src="https://static-00.iconduck.com/assets.00/mobile-wallet-icon-2048x2048-r1ma8olm.png" alt="logo">
                 </span>
 
                 <div class="text header-text">
@@ -29,6 +29,7 @@
             </div>
             <i class='bx bx-chevron-right toggle'></i>
         </header>
+
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links">
@@ -64,17 +65,20 @@
                     </li>
                 </ul>
             </div>
+
             <div class="bottom-content">
-                <li class="@Url.Action("Home","Home")">
-                    <a href="">
+                <li>
+                    <a href="@Url.Action("Login", "Home")">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>
                 </li>
             </div>
         </div>
+
     </nav>
     @RenderBody()
+
     <script>
         $(function () {
             const body = document.querySelector("body"),

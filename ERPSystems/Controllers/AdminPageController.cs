@@ -143,21 +143,21 @@ namespace ERPSystems.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT * FROM Useraccount";
+                com.CommandText = "SELECT * FROM Account";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
                     userAccounts.Add(new Account
                     {
-                        UserID = int.Parse(dr["UseraccountID"].ToString())
+                        UserID = int.Parse(dr["AccId"].ToString())
                     ,
-                        UserFullName = dr["UseraccountLNAME"] + ", " + dr["UseraccountFNAME"] + " " + dr["UseraccountUSERNAME"].ToString()
+                        UserFullName = dr["AccLname"] + ", " + dr["AccFname"] + " " + dr["AccUserName"].ToString()
                     ,
-                        UserName = dr["UseraccountUSERNAME"].ToString()
+                        UserName = dr["AccUserName"].ToString()
                     ,
-                        UserPassword = dr["UseraccountPASSWORD"].ToString()
+                        UserPassword = dr["AccPassword"].ToString()
                     ,
-                        UserType = dr["UseraccountType"].ToString()
+                        UserType = dr["AccType"].ToString()
                     });
                 }
                 con.Close();
@@ -169,8 +169,7 @@ namespace ERPSystems.Controllers
         }
         [HttpPost]
         public ActionResult Account(Account acc)
-        {      
-
+        {
             int id = acc.UserID;
             string type = acc.UserType;
             try
@@ -178,16 +177,19 @@ namespace ERPSystems.Controllers
                 connnectionString();
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "UPDATE Useraccount set UseraccountType = '" + type + "' where UseraccountId = '" + id + "'";
+                com.CommandText = "UPDATE Account set AccType = '" + type + "' where AccId = '" + id + "'";
                 com.ExecuteNonQuery();
 
             }
             catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
-            return View("Account");
+            return Redirect("Account");
+        }
+        public ActionResult Logout()
+        {
+            return RedirectToAction("Login", "Home");
         }
     }
 }

@@ -1,4 +1,9 @@
-﻿namespace ERPSystems.Controllers
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace ERPSystems.Models
 {
     public class Account
     {

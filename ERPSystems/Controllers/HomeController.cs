@@ -35,19 +35,31 @@ namespace ERPSystems.Controllers
             connnectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from Useraccount where UseraccountUserName = '" + account.UserName + "' and UseraccountPassword = '" + account.UserPassword + "'";
+            com.CommandText = "select * from Account where AccUserName = '" + account.UserName + "' and AccPassword = '" + account.UserPassword + "'";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
-                string type = dr["UseraccountType"].ToString();
+                string type = dr["AccType"].ToString();
                 if (type == "Admin")
                 {
-                    return RedirectToAction("AdminDashboard","AdminPage");
+                    return RedirectToAction("AdminDashboard", "AdminPage");
+                }
+                else if (type == "Requestor")
+                {
+                    return RedirectToAction("RequestorDashboard", "RequestorPage");
+                }
+                else if (type == "Purchasing")
+                {
+                    return RedirectToAction("PurchasingDashboard", "PurchasingPage");
+                }
+                else if (type == "Custodian")
+                {
+                    return RedirectToAction("CustodianDashboard", "CustodianPage");
                 }
                 else
                 {
-                    return RedirectToAction("VerifyUser","Home");
-                }                
+                    return RedirectToAction("VerifyUser", "Home");
+                }
             }
             else
             {
@@ -71,12 +83,10 @@ namespace ERPSystems.Controllers
                     connnectionString();
                     con.Open();
                     com.Connection = con;
-                    com.CommandText = "insert into Useraccount(UseraccountFname,UseraccountLname,UseraccountMname,UseraccountPhone,UseraccountEmail,UseraccountUserName,UseraccountPassword)values(@UseraccountFname,@UseraccountLname,@UseraccountMname,@UseraccountPhone,@UseraccountEmail,@UseraccountUserName,@UseraccountPassword)";
+                    com.CommandText = "insert into Account(AccFname,AccLname,AccMname,AccUsername,AccPassword)values(@UseraccountFname,@UseraccountLname,@UseraccountMname,@UseraccountUserName,@UseraccountPassword)";
                     com.Parameters.AddWithValue("@UseraccountFname", acc.UserFname);
                     com.Parameters.AddWithValue("@UseraccountLname", acc.UserLname);
                     com.Parameters.AddWithValue("@UseraccountMname", acc.UserMname);
-                    com.Parameters.AddWithValue("@UseraccountPhone", acc.UserPhone);
-                    com.Parameters.AddWithValue("@UseraccountEmail", acc.UserEmail);
                     com.Parameters.AddWithValue("@UseraccountUserName", acc.UserName);
                     com.Parameters.AddWithValue("@UseraccountPassword", acc.UserPassword);
                     com.ExecuteNonQuery();

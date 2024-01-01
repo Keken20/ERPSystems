@@ -19,7 +19,7 @@
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="" alt="logo">
+                    <img src="https://static-00.iconduck.com/assets.00/mobile-wallet-icon-2048x2048-r1ma8olm.png" alt="logo">
                 </span>
 
                 <div class="text header-text">
@@ -29,31 +29,26 @@
             </div>
             <i class='bx bx-chevron-right toggle'></i>
         </header>
+
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="@Url.Action("PurchasingDashboard","PurchasingPage")">
+                        <a href="@Url.Action("CustodianDashboard","CustodianPage")">
                             <i class='bx bx-home-alt icon'></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="@Url.Action("PurchasingPageRequest","PurchasingPage")">
-                            <i class='bx bx-user icon'></i>
-                            <span class="text nav-text">Request</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="@Url.Action("PurchasingPageCanvass","PurchasingPage")">
+                        <a href="@Url.Action("CustodianPurchaseOrder","CustodianPage")">
                             <i class='bx bx-purchase-tag-alt icon'></i>
-                            <span class="text nav-text">Canvass</span>
+                            <span class="text nav-text">Purchase Order</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="@Url.Action("PurchasingPageQoutation","PurchasingPage")">
+                        <a href="@Url.Action("CustodianInventory","CustodianPage")">
                             <i class='bx bx-data icon'></i>
-                            <span class="text nav-text">Qoutation</span>
+                            <span class="text nav-text">Inventory</span>
                         </a>
                     </li>
                 </ul>
@@ -68,8 +63,12 @@
                 </li>
             </div>
         </div>
+
     </nav>
-    @RenderBody()
+    <div>
+        @RenderBody()
+    </div>
+
     <script>
         $(function () {
             const body = document.querySelector("body"),
