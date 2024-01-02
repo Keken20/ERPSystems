@@ -35,14 +35,7 @@ namespace ERPSystem.Data
                         supplier.SuppBarangay = reader.GetString(5);
                         supplier.SuppZipcode = reader.GetString(6);
                         supplier.SuppCreatedAt = reader.GetDateTime(7);
-                        try
-                        {
-                            supplier.SuppUpdatedAt = reader.GetDateTime(8);
-                        }
-                        catch
-                        {
-                            supplier.SuppUpdatedAt = DateTime.MinValue;
-                        }
+                        supplier.SuppUpdatedAt = reader.GetDateTime(8);
                         supplier.SuppIsActive = reader.GetInt32(9);
 
                         supplierList.Add(supplier);
@@ -82,14 +75,7 @@ namespace ERPSystem.Data
                         supplier.SuppBarangay = reader.GetString(5);
                         supplier.SuppZipcode = reader.GetString(6);
                         supplier.SuppCreatedAt = reader.GetDateTime(7);
-                        try
-                        {
-                            supplier.SuppUpdatedAt = reader.GetDateTime(8);
-                        }
-                        catch
-                        {
-                            supplier.SuppUpdatedAt = DateTime.MinValue;
-                        }
+                        supplier.SuppUpdatedAt = reader.GetDateTime(8);
                         supplier.SuppIsActive = reader.GetInt32(9);
                     }
                 }
@@ -127,14 +113,7 @@ namespace ERPSystem.Data
                         supplier.SuppBarangay = reader.GetString(5);
                         supplier.SuppZipcode = reader.GetString(6);
                         supplier.SuppCreatedAt = reader.GetDateTime(7);
-                        try
-                        {
-                            supplier.SuppUpdatedAt = reader.GetDateTime(8);
-                        }
-                        catch
-                        {
-                            supplier.SuppUpdatedAt = DateTime.MinValue;
-                        }
+                        supplier.SuppUpdatedAt = reader.GetDateTime(8);
                         supplier.SuppIsActive = reader.GetInt32(9);
 
                         supplierList.Add(supplier);
@@ -149,7 +128,7 @@ namespace ERPSystem.Data
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string sqlQuery = "INSERT INTO dbo.Supplier (SUPPNAME, SUPPPHONE, SUPPCITY, SUPPMUNICIPALITY, SUPPBARANGAY, SUPPZIPCODE, SUPPCREATEDAT,SUPPISACTIVE) VALUES(@Name, @Contact, @City, @Municipality, @Barangay, @Zipcode, @CreatedAt, @IsActive)";
+                string sqlQuery = "INSERT INTO dbo.Supplier (SUPPNAME, SUPPPHONE, SUPPCITY, SUPPMUNICIPALITY, SUPPBARANGAY, SUPPZIPCODE, SUPPCREATEDAT,SUPPISACTIVE) VALUES(@Name, @Contact, @City, @Municipality, @Barangay, @Zipcode, @CreatedAt, @UpdatedAt, @IsActive)";
 
                 SqlCommand command = new SqlCommand(sqlQuery, connection);
 
@@ -159,8 +138,8 @@ namespace ERPSystem.Data
                 command.Parameters.AddWithValue("@Municipality", supplier.SuppMunicipality);
                 command.Parameters.AddWithValue("@Barangay", supplier.SuppBarangay);
                 command.Parameters.AddWithValue("@Zipcode", supplier.SuppZipcode);
-                command.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
-                //command.Parameters.AddWithValue("@UpdatedAt", supplier.SuppUpdatedAt);
+                command.Parameters.AddWithValue("@CreatedAt", DateTime.UtcNow);
+                command.Parameters.AddWithValue("@UpdatedAt", DateTime.UtcNow);
                 command.Parameters.AddWithValue("@IsActive", supplier.SuppIsActive);
 
                 connection.Open();
