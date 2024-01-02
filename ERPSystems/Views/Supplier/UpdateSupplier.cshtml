@@ -1,0 +1,66 @@
+﻿@model IEnumerable<ERPSystem.Models.Supplier>
+
+@{
+    ViewBag.Title = "UpdateSupplier";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<head>
+    <link href="~/Style/accountablestyle.css" rel="stylesheet" />
+</head>
+
+<section class="home">
+    <div class="text">Update Supplier</div>
+    <div style="margin-left: 10%">
+        @if (TempData["Msg"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Msg"]
+            </div>
+        }
+    </div>
+
+    <br />
+
+    <div class="table-container">
+        <div>
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Address</th>
+                        <th>Date Created</th>
+                        <th>Date Updated</th>
+                        <th>Status</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var Data in Model)
+                            {
+                                <tr>
+                                    <td>@Data.SuppID</td>
+                                    <td>@Data.SuppName</td>
+                                    <td>@Data.SuppContact</td>
+                                    <td>@Data.SuppCity, @Data.SuppMunicipality, @Data.SuppBarangay, @Data.SuppZipcode</td>
+                                    <td>@Data.SuppCreatedAt</td>
+                                    <td>@Data.SuppUpdatedAt</td>
+                                    <td>@Data.SuppIsActive</td>
+                                    <td>@Html.ActionLink("Update", "UpdateSupplierForm", new{@*@class = "bx bx-trash",*@id = Data.SuppID})</td>
+                                </tr>
+                        }
+                    }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+

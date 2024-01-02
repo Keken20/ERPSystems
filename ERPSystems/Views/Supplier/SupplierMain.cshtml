@@ -1,0 +1,111 @@
+﻿@model IPagedList<ERPSystem.Models.Supplier>
+
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "SupplierMain";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+@*<h1 style="margin-left: 10%">Supplier</h1>*@
+<head>
+    <link href="~/Style/accountablestyle.css" rel="stylesheet" />
+    <link href="~/Style/SupplierCSS.css" rel="stylesheet" />"
+</head>
+
+
+
+<section class="home">
+    <div class="text">Supplier</div>
+    <div class="functionbut">
+        @Html.ActionLink("Add Supplier", "AddSupplier")
+        @Html.ActionLink("Update Supplier", "UpdateSupplier")
+        @Html.ActionLink("Delete Supplier", "DeleteSupplier")
+    </div>
+    <br />
+    <br />
+    @using (Html.BeginForm("ProcessSearch", "Supplier"))
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group" style="margin-left: 10%">
+                <div class="col-md-10">
+                    <label for="searchId">Search for Supplier</label>
+                    <input type="text" name="searchId" id="searchId" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-left: 10%">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+
+        <div style="margin-left: 10%">
+            @if (TempData["Msg"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["Msg"]
+                </div>
+            }
+        </div>
+
+        @*<div class="form-group">
+                <label for="sortId">Sort by</label>
+                @Html.DropDownListFor
+            </div>*@
+    }
+    <br />
+
+    <div>
+        @Html.PagedListPager(Model, page => Url.Action("SupplierMain", "Supplier", new { page, search = Request.QueryString["searchId"] }))
+    </div>
+
+    <br />
+
+    <div class="table-container" style="position: fixed; margin-left: 3.6%; width: 85%;">
+        <div>
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppID)</th>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppName)</th>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppContact)</th>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppCity)</th>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppCreatedAt)</th>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppUpdatedAt)</th>
+                        <th>@Html.DisplayNameFor(model => Model.First().SuppIsActive)</th>
+                        @*<th colspan="2">Action</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var Data in Model)
+                            {
+                                <tr>
+                                    <td>@Data.SuppID</td>
+                                    <td>@Data.SuppName</td>
+                                    <td>@Data.SuppContact</td>
+                                    <td>@Data.SuppCity, @Data.SuppMunicipality, @Data.SuppBarangay, @Data.SuppZipcode</td>
+                                    <td>@Data.SuppCreatedAt</td>
+                                    <td>@Data.SuppUpdatedAt</td>
+                                    <td>@Data.SuppIsActive</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
+
+
+
+
