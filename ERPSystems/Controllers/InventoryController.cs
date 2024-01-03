@@ -15,16 +15,35 @@ namespace ERPSystem.Controllers
     public class InventoryController : Controller
     {
         // GET: Inventory
-        public ActionResult Index(int? pages)
+        public ActionResult Index(string sortName,int? pages)
         {
-            List<ViewModel> items = new List<ViewModel>();
-            InventoryDAO inventDAO = new InventoryDAO();
-            items = inventDAO.FetchAll();
-            return View("Index", items.ToList().ToPagedList(pages ?? 1, 3));
-        }
+            InventoryDAO inventoryDAO = new InventoryDAO();
+            List<ViewModel> sortResults = new List<ViewModel>();
 
+            
+            if (sortName == "NONE" || sortName == null)
+                sortResults = inventoryDAO.FetchAll();
+            else
+                sortResults = inventoryDAO.ItemSort(sortName);
+
+            //Store the current selected data from view
+            ViewBag.CurrentSort = sortName;
+            ViewBag.Pages = pages;
+
+            return View("Index", sortResults.ToPagedList(pages ?? 1, 2));
+ 
+        }
         public ActionResult Create()
         {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while loading products. Please try again later.";
+                return View("ItemForm");
+            }
             ProductDAO productDAO = new ProductDAO();
             List<ProductModel> products = productDAO.FetchAll();
             ViewBag.prod = new SelectList(products, "prod_Id", "prod_Name");
@@ -35,20 +54,27 @@ namespace ERPSystem.Controllers
         [HttpPost]
         public ActionResult ProcessCreate(InventoryModel inventoryModel)
         {
-            InventoryDAO inventoryDAO = new InventoryDAO();
-            int rows = inventoryDAO.CreateItem(inventoryModel);
-            if(rows > 0)
+            try
             {
-                TempData["Success"] = "Item Added!";
-                ModelState.Clear();
-                return RedirectToAction("Index");
+                InventoryDAO inventoryDAO = new InventoryDAO();
+                int rows = inventoryDAO.CreateItem(inventoryModel);
+                if (rows > 0)
+                {
+                    TempData["Success"] = "Item Added!";
+                    ModelState.Clear();
+                    return View("ItemForm");
+                }
+                else
+                {
+                    TempData["Error"] = "Inserted Data is Invalid";
+                    return View("ItemForm");
+                }
             }
-            else
+            catch(SqlException ex)
             {
-                TempData["Error"] = "Inserted Data is Invalid";
+                TempData["Error"] = "Data Already Existed!";
                 return View("ItemForm");
-            }
-           
+            }     
         }
 
         public ActionResult Delete(int ID, int? pages)
@@ -57,7 +83,7 @@ namespace ERPSystem.Controllers
             inventoryDAO.itemDelete(ID);
 
             List<ViewModel> items = inventoryDAO.FetchAll();
-            return RedirectToAction("Index", items.ToList().ToPagedList(pages ?? 1, 3));
+            return RedirectToAction("Index", items.ToList().ToPagedList(pages ?? 1, 15));
         }
 
         public ActionResult Edit(int ID)
@@ -83,22 +109,22 @@ namespace ERPSystem.Controllers
                 TempData["Error"] = "Inserted Data is Invalid";
                 return View("Edit", inventoryModel);
             }
-            return RedirectToAction("Index", items.ToList().ToPagedList(pages ?? 1, 3));
+            return RedirectToAction("Index", items.ToList().ToPagedList(pages ?? 1, 15));
         }
 
         public ActionResult Search(string searchPhrase, int? pages)
         {
             InventoryDAO inventoryDAO = new InventoryDAO();
             List<ViewModel> searchResults = inventoryDAO.SearchID(searchPhrase);
-            return View("Index", searchResults.ToList().ToPagedList(pages ?? 1,3));
+            return View("Index", searchResults.ToList().ToPagedList(pages ?? 1, 15));
         }
 
-
-        public ActionResult SortBy(string sortName, string sortType, int? pages)
+        public ActionResult Reactivate(int ID, int? pages, string sortName)
         {
             InventoryDAO inventoryDAO = new InventoryDAO();
-            List<ViewModel> sortResults = inventoryDAO.ItemSort(sortName, sortType);
-            return View("Index", sortResults);
+            inventoryDAO.itemReactivation(ID);
+
+            return RedirectToAction("Index", new { sortName, pages });
         }
     }
 }
