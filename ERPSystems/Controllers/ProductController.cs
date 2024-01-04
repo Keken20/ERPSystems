@@ -25,6 +25,8 @@ namespace ERPSystem.Controllers
         {
             CategoryDAO categoryDAO = new CategoryDAO();
             SupplierDAO supplierDAO = new SupplierDAO();
+
+            //Get and Set Data for the Dropdown Lists
             List<CategoryModel> category = categoryDAO.FetchAll();
             List<Supplier> supplist = supplierDAO.GetAll();
             ViewBag.categories = new SelectList(category, "categID", "CategoryName");
@@ -36,12 +38,19 @@ namespace ERPSystem.Controllers
         [HttpPost]
         public ActionResult ProcessCreate(ProductModel productModel, int? pages)
         {
-            ProductDAO productDAO = new ProductDAO();
-            productDAO.CreateProduct(productModel);
+            if (ModelState.IsValid)
+            {
+                ProductDAO productDAO = new ProductDAO();
+                productDAO.CreateProduct(productModel);
 
-            List<ViewModel.ProductViewModel> products = new List<ViewModel.ProductViewModel>();
-            products = productDAO.ShowProducts();
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Error"] = "Fill Up All Fields!!";
+                return RedirectToAction("productCreate");
+            }
+           
         }
 
 
@@ -49,15 +58,24 @@ namespace ERPSystem.Controllers
         {
             ProductDAO productDAO = new ProductDAO();
             productDAO.itemDelete(ID);
-            List<ViewModel.ProductViewModel> products = productDAO.ShowProducts();
 
-            return View("Index", products);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int ID)
         {
+
+            CategoryDAO categoryDAO = new CategoryDAO();
+            SupplierDAO supplierDAO = new SupplierDAO();
+            //Get and Set Data for the DropDownList
+            List<CategoryModel> category = categoryDAO.FetchAll();
+            List<Supplier> supplist = supplierDAO.GetAll();
+            ViewBag.categories = new SelectList(category, "categID", "CategoryName");
+            ViewBag.suppliers = new SelectList(supplist, "SuppID", "SuppName");
+
             ProductDAO productDAO = new ProductDAO();
             ProductModel products = productDAO.FetchOne(ID);
+
             return View("Edit", products);
         }
 
@@ -66,10 +84,7 @@ namespace ERPSystem.Controllers
         {
             ProductDAO productDAO = new ProductDAO();
             productDAO.UpdateProduct(productModel);
-
-            List<ProductModel> products = new List<ProductModel>();
-            products = productDAO.FetchAll();
-            return RedirectToAction("Index", products);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Search(string searchPhrase, int? pages)

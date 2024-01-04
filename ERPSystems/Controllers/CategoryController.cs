@@ -21,7 +21,6 @@ namespace ERPSystem.Controllers
 
         public ActionResult Create()
         {
-           
             return View();
         }
 

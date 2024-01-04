@@ -1,0 +1,51 @@
+﻿@{
+        ViewBag.Title = "Account";
+        Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+        string[] TableHeaders = new string[] { "userID"
+          ,"userName"
+          ,"userPassword"};
+}
+
+<head>
+    <link href="~/Style/accountablestyle.css" rel="stylesheet" />
+</head>
+
+<div class="home">
+    <div class="text">Account</div>
+    <div class="table-container" >
+        <div>
+            <table class="tbl">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Last Name</th>
+                        <th colspan="2">
+                            Action
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model != null)
+                        {
+                            foreach (var Data in Model)
+                            {
+                                <tr>
+                                    <td>@Data.UserID</td>
+                                    <td>@Data.UserName</td>
+                                    <td>@Data.UserPassword</td>
+                                    <td><button><i class='bx bx-edit-alt'></i></button></td>
+                                    <td><button><i class='bx bx-trash'></i></button></td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

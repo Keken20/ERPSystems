@@ -15,7 +15,7 @@ namespace ERPSystem.Controllers
     public class InventoryController : Controller
     {
         // GET: Inventory
-        public ActionResult Index(string sortName,int? pages)
+        public ActionResult Index(string sortName, int? pages)
         {
             InventoryDAO inventoryDAO = new InventoryDAO();
             List<ViewModel> sortResults = new List<ViewModel>();
@@ -26,24 +26,15 @@ namespace ERPSystem.Controllers
             else
                 sortResults = inventoryDAO.ItemSort(sortName);
 
-            //Store the current selected data from view
-            ViewBag.CurrentSort = sortName;
-            ViewBag.Pages = pages;
+            ViewBag.CurrentSort = sortName;  //Store the current selected data from sorted droplist
 
             return View("Index", sortResults.ToPagedList(pages ?? 1, 2));
  
         }
+
         public ActionResult Create()
         {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = "An error occurred while loading products. Please try again later.";
-                return View("ItemForm");
-            }
+            
             ProductDAO productDAO = new ProductDAO();
             List<ProductModel> products = productDAO.FetchAll();
             ViewBag.prod = new SelectList(products, "prod_Id", "prod_Name");
@@ -60,9 +51,7 @@ namespace ERPSystem.Controllers
                 int rows = inventoryDAO.CreateItem(inventoryModel);
                 if (rows > 0)
                 {
-                    TempData["Success"] = "Item Added!";
-                    ModelState.Clear();
-                    return View("ItemForm");
+                    return RedirectToAction("Index");
                 }
                 else
                 {
@@ -70,7 +59,7 @@ namespace ERPSystem.Controllers
                     return View("ItemForm");
                 }
             }
-            catch(SqlException ex)
+            catch(Exception)
             {
                 TempData["Error"] = "Data Already Existed!";
                 return View("ItemForm");
@@ -101,8 +90,7 @@ namespace ERPSystem.Controllers
             List<ViewModel> items = inventoryDAO.FetchAll();
             if (rows > 0)
             {
-                TempData["Success"] = "Item Updated!";
-        
+                TempData["Success"] = "Item Updated!";            
             }
             else
             {
@@ -124,6 +112,7 @@ namespace ERPSystem.Controllers
             InventoryDAO inventoryDAO = new InventoryDAO();
             inventoryDAO.itemReactivation(ID);
 
+            //Pass the current sort action and current page state to the index
             return RedirectToAction("Index", new { sortName, pages });
         }
     }

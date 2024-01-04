@@ -1,8 +1,8 @@
 ﻿using ERPSystem.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 
 namespace ERPSystem.Data
 {
@@ -34,8 +34,8 @@ namespace ERPSystem.Data
                                 inventoryItem.prod_Description = reader["ProdDescription"].ToString();
                                 inventoryItem.inv_QOH = Convert.ToInt32(reader["invt_QOH"]);
                                 inventoryItem.ProdUnit = reader["ProdUnit"].ToString();
-                                inventoryItem.ProdPriceUnit = Convert.ToDouble(reader["ProdPriceUnit"]);
-                                inventoryItem.ProdTotalPrice = reader["ProdTotalPrice"] != DBNull.Value ? Convert.ToDouble(reader["ProdTotalPrice"]) : 0;;
+                                inventoryItem.ProdPriceUnit = reader["ProdPriceUnit"] != DBNull.Value ? Convert.ToDouble(reader["ProdPriceUnit"]) : 0; ;
+                                inventoryItem.ProdTotalPrice = reader["ProdTotalPrice"] != DBNull.Value ? Convert.ToDouble(reader["ProdTotalPrice"]) : 0; ;
                                 inventoryItem.inv_InDate = Convert.ToDateTime(reader["Invt_InDateAt"]);
                                 inventoryItem.isActive = Convert.ToInt32(reader["Invt_IsActive"]);
                                 returnItems.Add(inventoryItem);
@@ -44,7 +44,7 @@ namespace ERPSystem.Data
                         return returnItems;
                     }
                 }
-            }       
+            }
         }
 
         public int CreateItem(InventoryModel inventoryModel)
@@ -63,7 +63,7 @@ namespace ERPSystem.Data
                         cmd.Parameters.AddWithValue("@QOH", inventoryModel.inv_QOH);
                         cmd.Parameters.AddWithValue("@unitMEasure", inventoryModel.ProdUnit);
                         cmd.Parameters.AddWithValue("@uPrice", inventoryModel.ProdUnitPrice);
-                        double total = inventoryModel.ProdUnitPrice * inventoryModel.inv_QOH;
+                        double total = (double)(inventoryModel.ProdUnitPrice * inventoryModel.inv_QOH);
                         cmd.Parameters.AddWithValue("@totPrice", total);
                         cmd.Parameters.AddWithValue("@active", 1);
                         var itemID = cmd.ExecuteNonQuery();
@@ -74,7 +74,7 @@ namespace ERPSystem.Data
                 {
                     return -1;
                 }
-                
+
             }
         }
 
@@ -85,7 +85,7 @@ namespace ERPSystem.Data
                 ConnectDB.Open();
                 using (var cmd = ConnectDB.CreateCommand())
                 {
-                    
+
                     try
                     {
                         cmd.CommandType = CommandType.Text;
@@ -96,7 +96,7 @@ namespace ERPSystem.Data
                         cmd.Parameters.AddWithValue("@QOH", inventoryModel.inv_QOH);
                         cmd.Parameters.AddWithValue("@unitMEasure", inventoryModel.ProdUnit);
                         cmd.Parameters.AddWithValue("@uPrice", inventoryModel.ProdUnitPrice);
-                        double total = inventoryModel.ProdUnitPrice * inventoryModel.inv_QOH;
+                        double total = (double)(inventoryModel.ProdUnitPrice * inventoryModel.inv_QOH);
                         cmd.Parameters.AddWithValue("@totPrice", total);
                         cmd.Parameters.AddWithValue("@update", inventoryModel.invt_UpDate);
                         cmd.Parameters.AddWithValue("@active", 1);
@@ -109,7 +109,7 @@ namespace ERPSystem.Data
                         return -1;
                     }
                 }
-                    
+
 
             }
         }
@@ -171,8 +171,8 @@ namespace ERPSystem.Data
                             }
                         }
                         return inventoryItem;
-                    } 
-                }        
+                    }
+                }
             }
         }
 
@@ -189,7 +189,7 @@ namespace ERPSystem.Data
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "SELECT Invt_InDateAt, Inventory.ProdId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Invt_IsActive " +
                         "from Inventory INNER JOIN product on Inventory.ProdId = product.ProdId WHERE (product.prodName LIKE '%'+@searchkey+'%' OR product.prodId LIKE '%'+@searchkey+'%' or product.prodDescription LIKE '%'+@searchkey+'%' OR " +
-                        "invt_QOH LIKE '%'+@searchkey+'%' or ProdUnit LIKE '%'+@searchkey+'%' OR ProdPriceUnit LIKE '%'+@searchkey+'%') AND Invt_IsActive = 1 ORDER BY INVENTORY.PRODID ASC";
+                        "invt_QOH LIKE '%'+@searchkey+'%' or ProdUnit LIKE '%'+@searchkey+'%' OR ProdPriceUnit LIKE '%'+@searchkey+'%' OR ProdTotalPrice LIKE '%'+@searchkey+'%') AND Invt_IsActive = 1 ORDER BY INVENTORY.PRODID ASC";
 
                     cmd.Parameters.AddWithValue("@searchkey", searchPhrase);
 
@@ -209,19 +209,45 @@ namespace ERPSystem.Data
                                 inventoryItem.ProdTotalPrice = Convert.ToDouble(reader["ProdTotalPrice"]);
                                 inventoryItem.inv_InDate = Convert.ToDateTime(reader["Invt_InDateAt"]);
                                 inventoryItem.isActive = Convert.ToInt32(reader["Invt_IsActive"]);
-                                //double totPrice = ComputedValue(reader.GetValue(6));
-                                //inventoryItem.totalPrice = totPrice;
                                 returnItems.Add(inventoryItem);
                             }
                         }
                     }
                     return returnItems;
                 }
-            }  
+            }
         }
 
-        public List<ViewModel> ItemSort(string sortName, string sortType)
+        internal int itemReactivation(int ID)
         {
+            using (var ConnectDB = new SqlConnection(connString))
+            {
+                ConnectDB.Open();
+                using (var cmd = ConnectDB.CreateCommand())
+                {
+                    try
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "UPDATE Inventory set Invt_IsActive = @activate where ProdId = @pID";
+
+                        cmd.Parameters.AddWithValue("@pID", ID);
+                        cmd.Parameters.AddWithValue("@activate", 1);
+
+                        int deleteID = cmd.ExecuteNonQuery();
+
+                        return deleteID;
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
+                }
+            }
+        }
+
+        public List<ViewModel> ItemSort(string sortedName)
+        {
+
             List<ViewModel> sortedItem = new List<ViewModel>();
 
             using (SqlConnection ConnectDB = new SqlConnection(connString))
@@ -230,9 +256,8 @@ namespace ERPSystem.Data
                 using (var cmd = ConnectDB.CreateCommand())
                 {
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
-                        "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
-                        $"ORDER BY {sortName} {sortType}";
+                    cmd.CommandText = FetchSqlQuery(sortedName);
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -255,6 +280,48 @@ namespace ERPSystem.Data
                     }
                     return sortedItem;
                 }
+            }
+        }
+
+        //used in Item sort
+        private string FetchSqlQuery(string sortName)
+        {
+            switch (sortName)
+            {
+                case "product.PRODID":
+                    return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
+                    $"ORDER BY product.PRODID ASC";
+
+                case "product.prodName":
+                    return  "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
+                    "ORDER BY product.prodName ASC";
+
+                case "invt_QOH":
+                    return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
+                    "ORDER BY invt_QOH ASC";
+
+                case "INVT_INDATEAT":
+                    return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
+                    "ORDER BY INVT_INDATEAT ASC";
+
+                case "PRODPRICEUNIT":
+                    return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
+                    "ORDER BY PRODPRICEUNIT ASC";
+
+                case "Invt_IsActive":
+                    return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 0 " +
+                    "ORDER BY PRODPRICEUNIT ASC";
+
+                default:
+                    return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
+                    "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
+                    "ORDER BY PRODID ASC";
             }
         }
     }

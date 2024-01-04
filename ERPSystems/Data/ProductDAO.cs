@@ -91,7 +91,7 @@ namespace ERPSystem.Data
                 using (var cmd = ConnectDB.CreateCommand())
                 {
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "SELECT * FROM PRODUCT WHERE prodId = @id WHERE PRODISACTIVE = 1";
+                    cmd.CommandText = "SELECT * FROM PRODUCT WHERE prodId = @id AND PRODISACTIVE = 1";
                     cmd.Parameters.AddWithValue("@id", ID);
 
                     using (var reader = cmd.ExecuteReader())
@@ -129,8 +129,8 @@ namespace ERPSystem.Data
                     try
                     {
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "INSERT INTO PRODUCT(ProdName, ProdDescription, ProdCreatedAt,ProdIsActive, ProdcategoryId, SupplierId) " +
-                                "values(@pName, @Description, @indate, @active, @pcatId, @supId)";
+                        cmd.CommandText = "INSERT INTO PRODUCT(ProdName, ProdDescription, ProdCreatedAt, ProdUpdatedAt, ProdIsActive, ProdcategoryId, SupplierId) " +
+                                "values(@pName, @Description, @indate, @update,@active, @pcatId, @supId)";
                         cmd.Parameters.AddWithValue("@pID", productModel.prod_Id);
                         cmd.Parameters.AddWithValue("@pName", productModel.prod_Name);
                         cmd.Parameters.AddWithValue("@Description", productModel.prod_Description);
