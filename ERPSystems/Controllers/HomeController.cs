@@ -42,11 +42,22 @@ namespace ERPSystems.Controllers
                 string type = dr["UseraccountType"].ToString();
                 if (type == "Admin")
                 {
-                    return RedirectToAction("AdminDashboard","AdminPage");
+                    return RedirectToAction("AdminDashboard", "AdminPage");
                 }
+                else if(type == "Purchaser")
+                {
+                    return RedirectToAction("PurchasingDashboard", "PurchasingPage");
+                }
+            
+                //else if (type == "Custodian")
+                //{
+                //    return RedirectToAction("", "AdminPage");
+                //}
+            
+
                 else
                 {
-                    return RedirectToAction("VerifyUser","Home");
+                    return RedirectToAction("VerifyUser", "Home");
                 }                
             }
             else

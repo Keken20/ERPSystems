@@ -129,14 +129,20 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustodianPageController.cs" />
+    <Compile Include="Models\ProductToPO.cs" />
+    <Compile Include="Models\PurchaseOrderFormInfo.cs" />
+    <Compile Include="Models\PurchaseOrderItem.cs" />
+    <Compile Include="Models\PurchasingForm.cs" />
     <Compile Include="Controllers\PurchasingPageController.cs" />
     <Compile Include="Controllers\RequestorPageController.cs" />
+    <Compile Include="Data\CanvassForm.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Controllers\AdminPageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\RequestForm.cs" />
     <Compile Include="Models\RequestItem.cs" />
     <Compile Include="Models\RequestModel.cs" />
@@ -217,13 +223,17 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\purchaseorder.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\request.js" />
+    <Content Include="Scripts\requestpage.js" />
     <Content Include="Style\123.css" />
     <Content Include="Style\account.css" />
     <Content Include="Style\homepagestyle.css" />
+    <Content Include="Style\purchaseorder.css" />
     <Content Include="Style\register.css" />
     <Content Include="Style\request.css" />
+    <Content Include="Style\requestpage.css" />
     <Content Include="Style\style.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -260,10 +270,10 @@
     <Content Include="Views\RequestorPage\RequestorDashboard.cshtml" />
     <Content Include="Views\RequestorPage\RequestorRequisition.cshtml" />
     <Content Include="Views\RequestorPage\RequestorInventory.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchaseOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\MyViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

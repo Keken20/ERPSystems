@@ -18,8 +18,6 @@ namespace ERPSystems.Controllers
         List<Account> userAccounts = new List<Account>();
         List<RequestForm> requestForm = new List<RequestForm>();
 
-      
-
         [HttpGet]
         private void connnectionString()
         {
@@ -185,7 +183,7 @@ namespace ERPSystems.Controllers
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
             return View("Account");
         }

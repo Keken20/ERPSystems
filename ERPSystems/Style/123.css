@@ -22,6 +22,10 @@ body {
 	background-color: #1BBC9B;
 	font-family: Cabin-Regular;
 }
+.container {
+	margin-top: 100px;
+	width: 750px;
+}
 .contact-form {
     margin: 0 auto;
     width: 40%;
@@ -29,6 +33,7 @@ body {
     text-align: center;	
 }
 h1 {
+	margin-top: 20px;
     text-align: center;
 	color: #EEEFF1;
 	font-size: 40px;

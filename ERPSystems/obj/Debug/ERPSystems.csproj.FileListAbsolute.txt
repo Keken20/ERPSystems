@@ -161,10 +161,10 @@ C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\bin\System.Web.
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\bin\Newtonsoft.Json.xml
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\bin\Antlr3.Runtime.pdb
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.AssemblyReference.cache
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.Properties.Resources.resources
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.GenerateResource.cache
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.CoreCompileInputs.cache
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.CopyComplete
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.dll
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.pdb
+C:\Users\Aiken Canama\source\repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.AssemblyReference.cache
