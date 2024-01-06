@@ -35,6 +35,25 @@
         {
             <input type="submit" value="Show All" class="btn btn-default" />
         }
+
+        @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+        {
+            <div class="form-horizontal">
+                <label for="sortName">Sort By:</label>
+                <select id="sortName" name="sortName" class="form-control">
+                    <option value="NONE">Select Column</option>
+                    <option value="PRODID">Product ID</option>
+                    <option value="ProdName">Product Name</option>
+                    <option value="ProdcategoryName">Category</option>
+                    <option value="ProdCreatedAT">Date Created</option>
+                    <option value="SupplierId">Supplier</option>
+                    <option value="ProdIsActive">Deactivated</option>
+                </select>
+                <br>
+                <input type="submit" value="Sort" class="btn btn-default" />
+            </div>
+        }
+
     </div>
     <div class="table-container">
         <div>
@@ -93,8 +112,16 @@
                                 @(item.isActive == 1 ? "Active" : "Inactive")
                             </td>
                             <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.prod_Id })
+                                @if (item.isActive == 1)
+                                {
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }) @:|
+
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.prod_Id });
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Reactivate", "Reactivate", new { id = item.prod_Id, sortName = ViewBag.CurrentProductSort })
+                                }
                             </td>
                         </tr>
                     }
@@ -102,5 +129,5 @@
             </table>
         </div>
     </div>
-    @Html.PagedListPager(Model, pages => Url.Action("Index", "Product", new { pages, search = Request.QueryString["Search"] }))
+    @Html.PagedListPager(Model, pages => Url.Action("Index", "Product", new { pages, sortName = ViewBag.CurrentProductSort }))
 </div>
