@@ -1,4 +1,4 @@
-﻿@model ERPSystems.Models.RequestModel
+﻿@model ERPSystem.Models.RequestModel
 @{
     ViewBag.Title = "PurchaseRequest";
     Layout = "~/Views/Shared/_AdminPage.cshtml";
@@ -17,6 +17,15 @@
             <h3 class="table-title">
                 Request
             </h3>
+            <br />
+            <br />
+            <div class="functionbut">
+                @Html.ActionLink("Add Requisition", "AddRequisition")
+                @Html.ActionLink("Update Requisition", "UpdateSupplier")
+                @Html.ActionLink("Delete Requisition", "DeleteSupplier")
+            </div>
+            <br />
+            <br />
             <div class="table-container">
                 <table>
                     <thead>
@@ -30,29 +39,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @{
-                            if (Model.requestform != null)
-                            {
-                                foreach (var i in Model.requestform)
-                                {
-                                    <tr>
-                                        <td>@i.RequestId</td>
-                                        <td>@i.RequestDate</td>
-                                        <td>@i.TotalItem</td>
-                                        <td>@i.RequestorName</td>
-                                        <td>@i.Status</td>
-                                        <td>
-                                            <button class="view" data-req-id="@i.RequestId" data-req-name="@i.RequestorName" data-req-date="@i.RequestDate">
-                                                <i class='bx bx-edit-alt'></i>
-                                            </button>
-                                            <button><i class='bx bx-trash'></i></button>
-                                        </td>
-                                    </tr>
-                                }
-                            }
-
-
-}
+                        @{ if (Model.requestform != null)
+                                        {
+                                            foreach (var i in Model.requestform)
+                                            {
+                            <tr>
+                                <td>@i.RequestId</td>
+                                <td>@i.RequestDate</td>
+                                <td>@i.TotalItem</td>
+                                <td>@i.RequestorName</td>
+                                <td>@i.Status</td>
+                                <td>
+                                    <button class="view" data-req-id="@i.RequestId" data-req-name="@i.RequestorName" data-req-date="@i.RequestDate">
+                                        <i class='bx bx-edit-alt'></i>
+                                    </button>
+                                    <button><i class='bx bx-trash'></i></button>
+                                </td>
+                            </tr> }
+                                        } }
                     </tbody>
                 </table>
 
@@ -60,7 +64,7 @@
 
         </div>
     </div>
-    <div class="invoice-wrapper show" id="print-area">
+    @*<div class="invoice-wrapper show" id="print-area">
         <div class="invoice"> 
             <div class="invoice-container">
                 <div class="invoice-head">
@@ -140,7 +144,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <script src="~/Scripts/request.js"></script>
 </section>
 

@@ -1,0 +1,118 @@
+﻿@using ERPSystem.Models
+@model DashboardViewModel
+
+@{
+    Layout = null;
+    string accntType = Model.User.UserType;
+    //Initialize Url Actions to use icons as actionlink
+    //var supplierUrl = Url.Action("", "");
+}
+
+@{
+    string requisitionURL = "";
+    string inventoryURL = "";
+    switch (accntType.ToLower())
+    {
+        case "purchasing":
+            inventoryURL = Url.Action("Index", "Inventory", new { id = Model.User.UserType});
+            break;
+        case "requestor":
+            requisitionURL = Url.Action("RequestorDashBoard", "RequestorPage", new { id = Model.User.UserType});
+            break;
+        default:
+            requisitionURL = Url.Action("RequestorDashBoard", "RequestorPage", new { id = Model.User.UserType });
+            inventoryURL = Url.Action("Index", "Inventory", new { id = Model.User.UserType });
+            break;
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <link href="~/Style/AdminDBoard.css" rel="stylesheet" />
+    <title>Dashboard</title>
+</head>
+<body>
+
+    <main>
+
+        <div class="container-header">
+            <div class="Menu-info">
+                <h1>DASHBOARD</h1>
+                <p>Welcome @Model.User.UserFname!!</p>
+            </div>
+            <div class="date-placement">
+                <p id="realtimeDate"></p>
+            </div>
+        </div>
+
+        <hr />
+
+        <section class="section-container">
+            <ul class="box-info">
+                <li>
+                    <a href="@inventoryURL" class="button-link">
+                        <i class="bx bxs-calendar-check"></i>
+                    </a>
+                    <span class="text">
+                        <h3>@Model.inventoryCount</h3>
+                        <p>New Order</p>
+                    </span>
+                </li>
+            </ul>
+
+            <ul class="box-info">
+                <li>
+                    <i class='bx bxs-group'></i>
+                    <span class="text">
+                        <h3>2834</h3>
+                        <p>Users</p>
+                    </span>
+                </li>
+            </ul>
+
+            <ul class="box-info">
+                <li>
+                    <i class='bx bxs-dollar-circle'></i>
+                    <span class="text">
+                        <h3>$2543</h3>
+                        <p>Total Sales</p>
+                    </span>
+                </li>
+            </ul>
+
+            <ul class="box-info">
+                <li>
+                    <a href="@requisitionURL" class="button-link">
+                        <i class='bx bx-store'></i>
+                    </a>
+                    <span class="text">
+                        <h3>3234</h3>
+                        <p>Inventory</p>
+                    </span>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+</body>
+</html>
+
+<script>
+    function updateRealtimeDate() {
+        var element = document.getElementById("realtimeDate");
+        var currentDate = new Date();
+        var formattedDate = currentDate.toLocaleString(); // Adjust the format as needed
+        element.innerHTML = "Date Now: " + formattedDate;
+    }
+
+    // Update the date/time every second (1000 milliseconds)
+    setInterval(updateRealtimeDate, 1000);
+
+    // Call the function once to set the initial value
+    updateRealtimeDate();
+</script>
