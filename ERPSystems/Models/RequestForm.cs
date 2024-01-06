@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ERPSystems.Models
+namespace ERPSystem.Models
 {
     public class RequestForm
     {
