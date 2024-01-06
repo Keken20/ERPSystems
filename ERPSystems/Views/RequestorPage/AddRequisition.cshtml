@@ -1,0 +1,78 @@
+﻿@model ERPSystem.Models.ItemRequestModel
+@{
+    ViewBag.Title = "AddRequisition";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<head>
+    <link href="~/Style/style.css" rel="stylesheet" />
+</head>
+<div class="home">
+    @using (Html.BeginForm("AddRequisitionItem", "RequestorPage", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="items-container">
+                <tr class="item-row">
+                    <td>
+                        @Html.DropDownListFor(model => model.reqItems[0].ProdId, (SelectList)ViewBag.returnList, "Select Product", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.reqItems[0].ProdId, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.reqItems[0].Unit, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqItems[0].Unit, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.reqItems[0].Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.reqItems[0].Quantity, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="removeItemRow(this)">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-success" onclick="addItemRow()">Add Item</button>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </div>
+        </div>
+    }
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        var index = 1; // Initial index for additional rows
+        function addItemRow() {
+            var newRow = $("#items-container tr.item-row:first").clone();
+            newRow.find("select, input").each(function () {
+                var nameAttr = $(this).attr("name").replace("[0]", "[" + index + "]");
+                $(this).attr("name", nameAttr);
+                $(this).val(""); // Clear the values in the new row
+            });
+            newRow.find("span.field-validation-valid").empty(); // Clear validation messages
+            index++;
+            $("#items-container").append(newRow);
+        }
+
+        function removeItemRow(button) {
+            $(button).closest("tr").remove();
+        }
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

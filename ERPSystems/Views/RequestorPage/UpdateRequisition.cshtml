@@ -1,0 +1,64 @@
+﻿@model ERPSystem.Models.RequestModel
+@{
+    ViewBag.Title = "UpdateRequisition";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>UpdateRequisiton</h2>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                Update
+            </h3>
+            <br />
+            <br />
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Request ID</th>
+                            <th>Date</th>
+                            <th>Total Item</th>
+                            <th>Requestor Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.requestform != null)
+                            {
+                                foreach (var Data in Model.requestform)
+                                {
+                                    <tr>
+                                        <td>@Data.RequestId</td>
+                                        <td>@Data.RequestDate</td>
+                                        <td>@Data.TotalItem</td>
+                                        <td>@Data.RequestorName</td>
+                                        <td>@Data.Status</td>
+                                        <td>
+                                            @Html.ActionLink("Update", "UpdateRequisitionForm", new
+                                                { id = Data.RequestId })
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="~/Scripts/request.js"></script>
+</section>
