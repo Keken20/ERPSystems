@@ -20,7 +20,7 @@ namespace ERPSystem.Data
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "SELECT Invt_InDateAt, Inventory.ProdId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, INVENTORY.Invt_IsActive " +
-                    "from Inventory INNER JOIN product on Inventory.ProdId = product.ProdId WHERE Inventory.Invt_IsActive = 1";
+                    "from Inventory INNER JOIN product on Inventory.ProdId = product.ProdId WHERE Inventory.Invt_IsActive = 1"; //Change to orderby DateCreated Desc, 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.HasRows)
@@ -114,29 +114,26 @@ namespace ERPSystem.Data
             }
         }
 
-        internal int itemDelete(int ID)
+        internal string itemDelete(int ID)
         {
             using (var ConnectDB = new SqlConnection(connString))
             {
                 ConnectDB.Open();
                 using (var cmd = ConnectDB.CreateCommand())
                 {
-                    try
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "UPDATE Inventory set Invt_IsActive = @deactivate where ProdId = @pID";
 
-                        cmd.Parameters.AddWithValue("@pID", ID);
-                        cmd.Parameters.AddWithValue("@deactivate", 0);
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "UPDATE Inventory set Invt_IsActive = @deactivate where ProdId = @pID";
 
-                        int deleteID = cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@pID", ID);
+                    cmd.Parameters.AddWithValue("@deactivate", 0);
 
-                        return deleteID;
-                    }
-                    catch (Exception)
-                    {
-                        return -1;
-                    }
+                    var deleteID = cmd.ExecuteNonQuery();
+
+                    if (deleteID > 0)
+                        return $"Inventory Product ID: {ID} Deactivated";
+                    else
+                        return "ID NOT FOUND";
                 }
             }
         }
@@ -322,6 +319,36 @@ namespace ERPSystem.Data
                     return "SELECT invt_InDateAt, Inventory.prodId, product.prodName, product.prodDescription, invt_QOH, ProdUnit, ProdPriceUnit, ProdTotalPrice, Inventory.Invt_IsActive " +
                     "from Inventory INNER JOIN product on Inventory.prodid = product.prodid WHERE Inventory.Invt_isActive = 1 " +
                     "ORDER BY PRODID ASC";
+            }
+        }
+
+        public int countInventory()
+        {
+            int getCount = 0;
+            using (SqlConnection ConnectDB = new SqlConnection(connString))
+            {
+                ConnectDB.Open();
+
+                using (var cmd = ConnectDB.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "SELECT COUNT(*) AS ICOUNT FROM INVENTORY WHERE INVT_ISACTIVE = 1";
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            if (reader.Read())
+                            {
+                                getCount = Convert.ToInt32(reader["ICOUNT"]);
+                            }
+                            else
+                            {
+                                getCount = 0;
+                            }
+                        }
+                        return getCount;
+                    }
+                }    
             }
         }
     }

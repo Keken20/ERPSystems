@@ -95,7 +95,7 @@ namespace ERPSystem.Data
                 using (var cmd = ConnectDB.CreateCommand())
                 {
                     cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "SELECT * FROM PRODUCTCATEGORY WHERE ProdCategoryID = @id WHERE IsActive = 1";
+                    cmd.CommandText = "SELECT * FROM PRODUCTCATEGORY WHERE ProdCategoryID = @id and IsActive = 1";
                     cmd.Parameters.AddWithValue("@id", ID);
 
                     CategoryModel category = new CategoryModel();

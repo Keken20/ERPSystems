@@ -56,7 +56,7 @@ namespace ERPSystem.Data
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "SELECT ProdId, ProdName, ProdDescription, ProductCategory.ProdcategoryName, " +
                     "SuppName, ProdIsActive, ProdCreatedAt FROM Product INNER JOIN  ProductCategory ON Product.ProdcategoryId = ProductCategory.ProdcategoryId " +
-                    "INNER JOIN Supplier ON Product.SupplierId = Supplier.SuppId WHERE ProdIsActive = 1 ORDER BY PRODID ASC";
+                    "INNER JOIN Supplier ON Product.SupplierId = Supplier.SuppId WHERE ProdIsActive = 1 ORDER BY PRODID DESC";
 
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -212,6 +212,32 @@ namespace ERPSystem.Data
             }
         }
 
+        internal int productActivation(int ID)
+        {
+            using (SqlConnection ConnectDB = new SqlConnection(connString))
+            {
+                ConnectDB.Open();
+                using (var cmd = ConnectDB.CreateCommand())
+                {
+                    try
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "UPDATE PRODUCT set ProdIsActive = @activate where prodid = @ID";
+
+                        cmd.Parameters.AddWithValue("@ID", ID);
+                        cmd.Parameters.AddWithValue("@activate", 1);
+
+                        int deleteID = cmd.ExecuteNonQuery();
+                        return deleteID;
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
+                }
+            }
+        }
+
         internal List<ViewModel.ProductViewModel> SearchKey(string searchPhrase)
         {
             List<ViewModel.ProductViewModel> returnProducts = new List<ViewModel.ProductViewModel>();
@@ -252,7 +278,76 @@ namespace ERPSystem.Data
                 }
             }             
         }
+
+        public List<ViewModel.ProductViewModel> sortProduct(string sortName)
+        {
+            List<ViewModel.ProductViewModel> productList = new List<ViewModel.ProductViewModel>();
+            using (var ConnectDb = new SqlConnection(connString))
+            {
+                ConnectDb.Open();
+                using (var cmd = ConnectDb.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    if(sortName != "ProdIsActive")
+                    {
+                        cmd.CommandText = "SELECT ProdId, ProdName, ProdDescription, ProductCategory.ProdcategoryName, " +
+                        "SuppName, ProdIsActive, ProdCreatedAt FROM Product INNER JOIN  ProductCategory ON Product.ProdcategoryId = ProductCategory.ProdcategoryId " +
+                        "INNER JOIN Supplier ON Product.SupplierId = Supplier.SuppId WHERE ProdIsActive = 1 ORDER BY " +
+                        $"{sortName} ASC";
+                    }
+                    else
+                    {
+                        cmd.CommandText = "SELECT ProdId, ProdName, ProdDescription, ProductCategory.ProdcategoryName, " +
+                        "SuppName, ProdIsActive, ProdCreatedAt FROM Product INNER JOIN  ProductCategory ON Product.ProdcategoryId = ProductCategory.ProdcategoryId " +
+                        "INNER JOIN Supplier ON Product.SupplierId = Supplier.SuppId WHERE ProdIsActive = 0 ORDER BY " +
+                        $"{sortName} ASC";
+                    }
+               
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                ViewModel.ProductViewModel products = new ViewModel.ProductViewModel();
+                                products.prod_Id = Convert.ToInt32(reader["ProdId"]);
+                                products.prod_Name = reader["prodName"].ToString();
+                                products.prod_Description = reader["prodDescription"].ToString();
+                                products.inDate = Convert.ToDateTime(reader["ProdCreatedAt"]);
+                                products.CategoryName = reader["ProdcategoryName"].ToString();
+                                products.SuppName = reader["SuppName"].ToString();
+                                products.isActive = Convert.ToInt32(reader["ProdIsActive"]);
+                                productList.Add(products);
+                            }
+                        }
+
+                    }
+                    return productList;
+                }
+            }
+        }
+
+        public int CountProduucts()
+        {
+            using (SqlConnection ConnectDB = new SqlConnection(connString))
+            {
+                ConnectDB.Open();
+                using (var cmd = ConnectDB.CreateCommand())
+                {
+                    try
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT COUNT(*) FROM PRODUCT WHERE PRODISACTIVE = 1";
+
+                        int countNum = cmd.ExecuteNonQuery();
+                        return countNum;
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
+                }
+            }
+        }
     }
-
-
 }
