@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ERPSystems.Models;
+using ERPSystem.Models;
 using System.Data.SqlClient;
 
-namespace ERPSystems.Controllers
+namespace ERPSystem.Controllers
 {
     public class HomeController : Controller
     {
         SqlCommand com = new SqlCommand();
         SqlConnection con = new SqlConnection();
         SqlDataReader dr;
-        List<Account> userAccounts = new List<Account>();
+        List<UserAccount> userAccounts = new List<UserAccount>();
         [HttpGet]
         private void connnectionString()
         {
-            con.ConnectionString = ERPSystems.Properties.Resources.ConnectionString;
+            con.ConnectionString = ERPSystem.Properties.Resources.ConnectionString;
         }
         public ActionResult Home()
         {
@@ -30,24 +30,26 @@ namespace ERPSystems.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult VerifyLogin(Account account)
+        public ActionResult VerifyLogin(UserAccount account)
         {
             connnectionString();
             con.Open();
             com.Connection = con;
-            com.CommandText = "select * from Useraccount where UseraccountUserName = '" + account.UserName + "' and UseraccountPassword = '" + account.UserPassword + "'";
+            com.CommandText = "select * from Account where AccUsername = '" + account.UserName + "' and AccPassword = '" + account.UserPassword + "'";
             dr = com.ExecuteReader();
             if (dr.Read())
             {
-                string type = dr["UseraccountType"].ToString();
+                string type = dr["AccType"].ToString();
+                Session["userId"] = dr["AccId"].ToString();
+                Session["acctype"] = type;
                 if (type == "Admin")
                 {
-                    return RedirectToAction("AdminDashboard","AdminPage");
+                    return RedirectToAction("Dashboard","AdminPage");
                 }
                 else
                 {
                     return RedirectToAction("VerifyUser","Home");
-                }                
+                }
             }
             else
             {
@@ -62,7 +64,7 @@ namespace ERPSystems.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Register(Account acc)
+        public ActionResult Register(UserAccount acc)
         {
             if (ModelState.IsValid)
             {

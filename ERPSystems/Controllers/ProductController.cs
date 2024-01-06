@@ -13,11 +13,17 @@ namespace ERPSystem.Controllers
     public class ProductController : Controller
     {
         // GET: Product
-        public ActionResult Index(int? pages)
+        public ActionResult Index(string sortName, int? pages)
         {
             List<ViewModel.ProductViewModel> products = new List<ViewModel.ProductViewModel>();
             ProductDAO productDAO = new ProductDAO();
-            products = productDAO.ShowProducts();
+
+            if (sortName == "NONE" || sortName == null)
+                products = productDAO.ShowProducts();
+            else
+                products = productDAO.sortProduct(sortName);
+
+            ViewBag.CurrentProductSort = sortName;
 
             return View("Index", products.ToPagedList(pages ?? 1,5));
         }
@@ -92,6 +98,15 @@ namespace ERPSystem.Controllers
             ProductDAO productDAO = new ProductDAO();
             List<ViewModel.ProductViewModel> searchResults = productDAO.SearchKey(searchPhrase);
             return View("Index", searchResults.ToPagedList(pages ?? 1,5));
+        }
+
+        public ActionResult Reactivate(int ID, int? pages, string sortName)
+        {
+            ProductDAO productDAO = new ProductDAO();
+            productDAO.productActivation(ID);
+             
+            //Pass the current sort action and current page state to the index
+            return RedirectToAction("Index", new { sortName, pages });
         }
 
     }

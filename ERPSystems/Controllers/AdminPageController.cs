@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using ERPSystems.Models;
+using ERPSystem.Models;
 using System.Data.SqlClient;
+using ERPSystem.Data;
 
 namespace ERPSystems.Controllers
 {
@@ -15,15 +16,15 @@ namespace ERPSystems.Controllers
         SqlConnection con = new SqlConnection();
         SqlDataReader dr;
         List<RequestItem> requestItem = new List<RequestItem>();
-        List<Account> userAccounts = new List<Account>();
+        List<UserAccount> userAccounts = new List<UserAccount>();
         List<RequestForm> requestForm = new List<RequestForm>();
 
-      
+
 
         [HttpGet]
         private void connnectionString()
         {
-            con.ConnectionString = ERPSystems.Properties.Resources.ConnectionString;
+            con.ConnectionString = ERPSystem.Properties.Resources.ConnectionString;
         }
         public ActionResult SamplePage()
         {
@@ -38,7 +39,7 @@ namespace ERPSystems.Controllers
             return View();
         }
         public ActionResult PurchaseRequest(RequestModel model)
-        {                     
+        {
             FetchRequest();
             List<RequestForm> requestForms = new List<RequestForm>();
             model.requestform = requestForm;
@@ -50,24 +51,33 @@ namespace ERPSystems.Controllers
             if (userAccounts.Count > 0)
             {
                 userAccounts.Clear();
+
             }
             try
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "select * From RequisitionForm inner join  Account on RequisitionForm.AccId = Account.AccId";
+                com.CommandText = "select * From RequisitionForm inner join Account on RequisitionForm.AccId = Account.AccId";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
+                    //RequestForm reqForm = new RequestForm();
+
+                    //reqForm.RequestId = int.Parse(dr["ReqId"].ToString());
+                    //reqForm.RequestDate = DateTime.Parse(dr["ReqCreatedAt"].ToString());
+                    ////reqForm.TotalItem = int.Parse(dr["ReqTotalItem"].ToString());
+                    //reqForm.RequestorName = dr["AccFname"] + " " + dr["AccLname"].ToString();
+                    //reqForm.Status = dr["ReqStatus"].ToString();
+
+                    //requestForm.Add(reqForm);
+
                     requestForm.Add(new RequestForm
                     {
                         RequestId = int.Parse(dr["ReqId"].ToString())
                     ,
                         RequestDate = DateTime.Parse(dr["ReqCreatedAt"].ToString())
                     ,
-                        TotalItem =int.Parse(dr["ReqTotalItem"].ToString())
-                    ,
-                        RequestorName = dr["AccFname"]+" "+ dr["AccLname"].ToString()
+                        RequestorName = dr["AccFname"] + " " + dr["AccLname"].ToString()
                     ,
                         Status = dr["ReqStatus"].ToString()
                     });
@@ -89,7 +99,7 @@ namespace ERPSystems.Controllers
             };
             return Json(requestmodel);
         }
-        [HttpPost] 
+        [HttpPost]
         private List<RequestItem> FetchRequestItem(int id)
         {
             try
@@ -107,8 +117,7 @@ namespace ERPSystems.Controllers
                         ProdId = int.Parse(dr["ProdId"].ToString())
                     ,
                         ProdName = dr["ProdName"].ToString()
-                    ,
-                        Description = dr["ProdDescription"].ToString()
+
                     ,
                         Unit = dr["ReqUnit"].ToString()
                     ,
@@ -121,8 +130,8 @@ namespace ERPSystems.Controllers
             {
                 throw;
             }
-           return (requestItem);
-        }      
+            return (requestItem);
+        }
         public ActionResult Supplier()
         {
             return View();
@@ -143,21 +152,21 @@ namespace ERPSystems.Controllers
             {
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "SELECT * FROM Useraccount";
+                com.CommandText = "SELECT * FROM Account";
                 dr = com.ExecuteReader();
                 while (dr.Read())
                 {
-                    userAccounts.Add(new Account
+                    userAccounts.Add(new UserAccount
                     {
-                        UserID = int.Parse(dr["UseraccountID"].ToString())
+                        UserID = int.Parse(dr["AccID"].ToString())
                     ,
-                        UserFullName = dr["UseraccountLNAME"] + ", " + dr["UseraccountFNAME"] + " " + dr["UseraccountUSERNAME"].ToString()
+                        UserFullName = dr["AccLname"] + ", " + dr["AccFname"] + " " + dr["AccUserName"].ToString()
                     ,
-                        UserName = dr["UseraccountUSERNAME"].ToString()
+                        UserName = dr["AccUserName"].ToString()
                     ,
-                        UserPassword = dr["UseraccountPASSWORD"].ToString()
+                        UserPassword = dr["AccPassword"].ToString()
                     ,
-                        UserType = dr["UseraccountType"].ToString()
+                        UserType = dr["AccType"].ToString()
                     });
                 }
                 con.Close();
@@ -168,8 +177,8 @@ namespace ERPSystems.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Account(Account acc)
-        {      
+        public ActionResult Account(UserAccount acc)
+        {
 
             int id = acc.UserID;
             string type = acc.UserType;
@@ -178,7 +187,7 @@ namespace ERPSystems.Controllers
                 connnectionString();
                 con.Open();
                 com.Connection = con;
-                com.CommandText = "UPDATE Useraccount set UseraccountType = '" + type + "' where UseraccountId = '" + id + "'";
+                com.CommandText = "UPDATE Account set AccType = '" + type + "' where AccId = '" + id + "'";
                 com.ExecuteNonQuery();
 
             }
@@ -188,6 +197,31 @@ namespace ERPSystems.Controllers
                 throw;
             }
             return View("Account");
+        }
+
+        public ActionResult Dashboard()
+        {
+            if(Session["userId"] != null)
+            {
+                var accID = Convert.ToInt32(Session["userId"]);
+                //Initialize Data Access Objects 
+                UserAccountDAO userAccountDAO = new UserAccountDAO();
+                InventoryDAO inventoryDAO = new InventoryDAO();
+                
+
+                UserAccount user = userAccountDAO.fetchAccount(accID);
+                DashboardViewModel stats = new DashboardViewModel { User = user, 
+                    inventoryCount = inventoryDAO.countInventory()
+                };
+                
+
+                return View(stats);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
         }
     }
 }

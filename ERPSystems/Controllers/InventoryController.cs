@@ -20,6 +20,7 @@ namespace ERPSystem.Controllers
             InventoryDAO inventoryDAO = new InventoryDAO();
             List<ViewModel> sortResults = new List<ViewModel>();
 
+            string MsgeResult = TempData["ResultMsge"] as string;
             
             if (sortName == "NONE" || sortName == null)
                 sortResults = inventoryDAO.FetchAll();
@@ -32,9 +33,26 @@ namespace ERPSystem.Controllers
  
         }
 
+        public ActionResult NonAdminIndex(string sortName, int? pages)
+        {
+            InventoryDAO inventoryDAO = new InventoryDAO();
+            List<ViewModel> sortResult = new List<ViewModel>();
+
+            string MsgeResult = TempData["ResultMsge"] as string;
+
+            if (sortName == "NONE" || sortName == null)
+                sortResult = inventoryDAO.FetchAll();
+            else
+                sortResult = inventoryDAO.ItemSort(sortName);
+
+            ViewBag.CurrentSort = sortName;  
+
+
+            return View("NonAdminIndex", sortResult.ToPagedList(pages ?? 1, 2));
+        }
+
         public ActionResult Create()
         {
-            
             ProductDAO productDAO = new ProductDAO();
             List<ProductModel> products = productDAO.FetchAll();
             ViewBag.prod = new SelectList(products, "prod_Id", "prod_Name");
@@ -69,7 +87,7 @@ namespace ERPSystem.Controllers
         public ActionResult Delete(int ID, int? pages)
         {
             InventoryDAO inventoryDAO = new InventoryDAO();
-            inventoryDAO.itemDelete(ID);
+            TempData["ResultMsge"] = inventoryDAO.itemDelete(ID); //get result
 
             List<ViewModel> items = inventoryDAO.FetchAll();
             return RedirectToAction("Index", items.ToList().ToPagedList(pages ?? 1, 15));
@@ -103,8 +121,15 @@ namespace ERPSystem.Controllers
         public ActionResult Search(string searchPhrase, int? pages)
         {
             InventoryDAO inventoryDAO = new InventoryDAO();
-            List<ViewModel> searchResults = inventoryDAO.SearchID(searchPhrase);
-            return View("Index", searchResults.ToList().ToPagedList(pages ?? 1, 15));
+            if(searchPhrase =="" || string.IsNullOrEmpty(searchPhrase))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                List<ViewModel> searchResults = inventoryDAO.SearchID(searchPhrase);
+                return View("Index", searchResults.ToList().ToPagedList(pages ?? 1, 15));
+            }      
         }
 
         public ActionResult Reactivate(int ID, int? pages, string sortName)
@@ -115,5 +140,7 @@ namespace ERPSystem.Controllers
             //Pass the current sort action and current page state to the index
             return RedirectToAction("Index", new { sortName, pages });
         }
+
+
     }
 }
