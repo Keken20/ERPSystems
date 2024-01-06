@@ -16,8 +16,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Quantity</th>
                     <th>Unit</th>
+                    <th>Quantity</th>
+                    <th id="qohColumn" style="display:none;">QOH</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -35,6 +36,7 @@
                         @Html.EditorFor(model => model.reqItems[0].Quantity, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.reqItems[0].Quantity, "", new { @class = "text-danger" })
                     </td>
+                    <td id="qohCell" style="display:none">another field</td>
                     <td>
                         <button type="button" class="btn btn-danger" onclick="removeItemRow(this)">Remove</button>
                     </td>
@@ -50,6 +52,8 @@
             </div>
         </div>
     }
+    @Html.ActionLink("CHECK INVENTORY", "CheckInventory", "Inventory", null, new { @class = "button-link", id = "checkInventoryLink" })
+
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>
@@ -73,6 +77,13 @@
         function removeItemRow(button) {
             $(button).closest("tr").remove();
         }
+
+        //CHeck inventory
+        $(document).ready(function () {
+            $("#checkInventoryButton").click(function () {
+                $("#qohColumnr, #qohCell").toggle();
+            });
+        });
     </script>
     @Scripts.Render("~/bundles/jqueryval")
 }
