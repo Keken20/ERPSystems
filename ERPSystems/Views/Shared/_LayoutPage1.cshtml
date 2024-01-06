@@ -2,9 +2,6 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/jquery-3.4.1.js"></script>
     <script src="~/Scripts/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +9,8 @@
     <link href="~/Style/style.css" rel="stylesheet" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
     <title>@ViewBag.Title</title>
 </head>
 <body>
@@ -19,7 +18,7 @@
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="https://static-00.iconduck.com/assets.00/mobile-wallet-icon-2048x2048-r1ma8olm.png" alt="logo">
+                    <img src="~/Image/notecon.ico" alt="logo" />
                 </span>
 
                 <div class="text header-text">
@@ -34,35 +33,41 @@
             <div class="menu">
                 <ul class="menu-links">
                     <li class="nav-link">
-                        <a href="@Url.Action("CustodianDashboard","CustodianPage")">
+                        <a href="@Url.Action("AdminDashboard","Default")">
                             <i class='bx bx-home-alt icon'></i>
                             <span class="text nav-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="@Url.Action("CustodianQuotation","CustodianPage")">
-                            <i class='bx bx-purchase-tag-alt icon'></i>
-                            <span class="text nav-text">Create Quotation</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="@Url.Action("CustodianPurchaseOrder","CustodianPage")">
+                        <a href="@Url.Action("Account","Default")">
                             <i class='bx bx-user icon'></i>
-                            <span class="text nav-text">Check PO</span>
+                            <span class="text nav-text">Account</span>
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="@Url.Action("CustodianInventory","CustodianPage")">
+                        <a href="@Url.Action("PurchaseRequest","Default")">
+                            <i class='bx bx-purchase-tag-alt icon'></i>
+                            <span class="text nav-text">Purchase Request</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="@Url.Action("Index","Inventory")">
                             <i class='bx bx-data icon'></i>
                             <span class="text nav-text">Inventory</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="@Url.Action("Supplier","Default")">
+                            <i class='bx bx-store-alt icon'></i>
+                            <span class="text nav-text">Supplier</span>
                         </a>
                     </li>
                 </ul>
             </div>
 
             <div class="bottom-content">
-                <li>
-                    <a href="@Url.Action("Login", "Home")">
+                <li class="">
+                    <a href="">
                         <i class='bx bx-log-out icon'></i>
                         <span class="text nav-text">Logout</span>
                     </a>
@@ -86,5 +91,9 @@
             });
         })
     </script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
 </body>
 </html>

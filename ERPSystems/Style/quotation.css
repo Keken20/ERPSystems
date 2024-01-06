@@ -3,6 +3,7 @@
     --dark-color: #535b61;
     --white-color: #fff;
 }
+
 .main--content {
     position: relative;
     width: 90%;
@@ -40,48 +41,55 @@ td {
     color: #333;
 }
 
-ul .ul-group{
+ul .ul-group {
     list-style-type: none;
 }
-ul .ul-group li{
-    margin: 2px 0;
-}
+
+    ul .ul-group li {
+        margin: 2px 0;
+    }
 
 /* text colors */
-.text-dark{
+.text-dark {
     color: var(--dark-color);
 }
-.text-blue{
+
+.text-blue {
     color: var(--blue-color);
 }
-.text-end{
+
+.text-end {
     text-align: right;
 }
-.text-center{
+
+.text-center {
     text-align: center;
 }
-.text-start{
+
+.text-start {
     text-align: left;
 }
-.text-bold{
+
+.text-bold {
     font-weight: 700;
 }
 /* hr line */
-.hr{
+.hr {
     height: 1px;
     background-color: rgba(0, 0, 0, 0.1);
 }
 /* border-bottom */
-.border-bottom{
+.border-bottom {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-body{
+body {
     font-family: 'Poppins', sans-serif;
     color: var(--dark-color);
     font-size: 14px;
 }
-.invoice-wrapper{
+
+.invoice-wrapper {
     overflow: auto;
     display: none;
     z-index: 1;
@@ -90,13 +98,15 @@ body{
     padding-top: 20px;
     padding-bottom: 20px;
 }
-.invoice-wrapper.show{
-   position:absolute;
-   width:100%;
-   top:0;
-}
-.invoice{
-    max-width: 850px;
+
+    .invoice-wrapper.show {
+        position: absolute;
+        width: 100%;
+        top: 0;
+    }
+
+.invoice {
+    max-width: 1280px;
     margin-right: auto;
     margin-left: auto;
     background-color: var(--white-color);
@@ -105,56 +115,70 @@ body{
     border-radius: 5px;
     min-height: 920px;
 }
-.invoice-head-top-left img{
+
+.invoice-head-top-left img {
     width: 130px;
 }
-.invoice-head-top-right h3{
+
+.invoice-head-top-right h3 {
     font-weight: 500;
     font-size: 27px;
     color: var(--blue-color);
 }
-.invoice-head-middle, .invoice-head-bottom{
+
+.invoice-head-middle, .invoice-head-bottom {
     padding: 16px 0;
 }
-.invoice-body{
+
+.invoice-body {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     overflow: hidden;
 }
-.invoice-body table{
-    border-collapse: collapse;
-    border-radius: 4px;
-    width: 100%;
-}
-.invoice-body table td, .invoice-body table th{
-    padding: 12px;
-}
-.invoice-body table tr{
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.invoice-body table thead{
-    background-color: rgba(0, 0, 0, 0.02);
-}
-.invoice-body-info-item{
+
+    .invoice-body table {
+        border-collapse: collapse;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+        .invoice-body table td, .invoice-body table th {
+            padding: 12px;
+        }
+
+        .invoice-body table tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-body table thead {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+.invoice-body-info-item {
     display: grid;
     grid-template-columns: 80% 20%;
 }
-.invoice-body-info-item .info-item-td{
-    padding: 12px;
-    background-color: rgba(0, 0, 0, 0.02);
-}
-.invoice-foot{
+
+    .invoice-body-info-item .info-item-td {
+        padding: 12px;
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+.invoice-foot {
     padding: 30px 0;
 }
-.invoice-foot p{
-    font-size: 12px;
-}
-.invoice-btns{
+
+    .invoice-foot p {
+        font-size: 12px;
+    }
+
+.invoice-btns {
     margin-top: 20px;
     display: flex;
     justify-content: center;
 }
-.invoice-btn{
+
+.invoice-btn {
     padding: 3px 9px;
     color: var(--dark-color);
     font-family: inherit;
@@ -162,44 +186,48 @@ body{
     cursor: pointer;
 }
 
-.invoice-head-top, .invoice-head-middle, .invoice-head-bottom{
+.invoice-head-top, .invoice-head-middle, .invoice-head-bottom {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding-bottom: 10px;
 }
 
-@media screen and (max-width: 992px){
-    .invoice{
+@media screen and (max-width: 992px) {
+    .invoice {
         padding: 40px;
     }
 }
 
-@media screen and (max-width: 576px){
-    .invoice-head-top, .invoice-head-middle, .invoice-head-bottom{
+@media screen and (max-width: 576px) {
+    .invoice-head-top, .invoice-head-middle, .invoice-head-bottom {
         grid-template-columns: repeat(1, 1fr);
     }
-    .invoice-head-bottom-right{
+
+    .invoice-head-bottom-right {
         margin-top: 12px;
         margin-bottom: 12px;
         text-align: right;
     }
-    .invoice *{
+
+    .invoice * {
         text-align: left;
     }
-    .invoice{
+
+    .invoice {
         padding: 28px;
     }
 }
 
-.overflow-view{
+.overflow-view {
     overflow-x: scroll;
 }
-.invoice-body{
+
+.invoice-body {
     min-width: 600px;
 }
 
-@media print{
-    .print-area{
+@media print {
+    .print-area {
         visibility: visible;
         width: 100%;
         position: absolute;
@@ -208,11 +236,11 @@ body{
         overflow: hidden;
     }
 
-    .overflow-view{
+    .overflow-view {
         overflow-x: hidden;
     }
 
-    .invoice-btns{
+    .invoice-btns {
         display: none;
     }
 }

@@ -1,10 +1,75 @@
-﻿
+﻿@model IEnumerable<ERPSystems.Models.Inventory>
+
 @{
     ViewBag.Title = "CustodianInventory";
     Layout = "~/Views/Shared/_CustodianPage.cshtml";
 }
-
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
 <section class="home">
-    <div class="text">Inventory</div>
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                Inventory
+            </h3>
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Product Description</th>
+                            <th>Quantity</th>
+                            <th>Product Unit</th>
+                            <th>Price Unit</th>
+                            <th>Category Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProdId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProdName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProdDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProdQOH)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProdUnit)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProdPriceUnit)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProcategoryName)
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", new { /* id = item.PrimaryKey */ })" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>&nbsp;
+                                    <a href="@Url.Action("Delete", new { /* id = item.PrimaryKey */ })" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </section>
-

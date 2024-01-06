@@ -52,6 +52,12 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -129,6 +135,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustodianPageController.cs" />
+    <Compile Include="Data\InventoryDAO.cs" />
     <Compile Include="Controllers\PurchasingPageController.cs" />
     <Compile Include="Controllers\RequestorPageController.cs" />
     <Compile Include="Models\Account.cs" />
@@ -137,6 +144,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\QuoteForm.cs" />
+    <Compile Include="Models\QuoteFormItem.cs" />
+    <Compile Include="Models\QuoteItem.cs" />
+    <Compile Include="Models\QuoteModel.cs" />
+    <Compile Include="Models\QuotePrice.cs" />
     <Compile Include="Models\RequestForm.cs" />
     <Compile Include="Models\RequestItem.cs" />
     <Compile Include="Models\RequestModel.cs" />
@@ -152,6 +165,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -217,11 +231,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\quotation.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\request.js" />
     <Content Include="Style\123.css" />
     <Content Include="Style\account.css" />
     <Content Include="Style\homepagestyle.css" />
+    <Content Include="Style\quotation.css" />
     <Content Include="Style\register.css" />
     <Content Include="Style\request.css" />
     <Content Include="Style\style.css" />
@@ -255,11 +271,13 @@
     <Content Include="Views\Shared\_CustodianPage.cshtml" />
     <Content Include="Views\CustodianPage\CustodianDashboard.cshtml" />
     <Content Include="Views\CustodianPage\CustodianPurchaseOrder.cshtml" />
-    <Content Include="Views\CustodianPage\CustodianInventory.cshtml" />
     <Content Include="Views\Shared\_RequestorPage.cshtml" />
     <Content Include="Views\RequestorPage\RequestorDashboard.cshtml" />
     <Content Include="Views\RequestorPage\RequestorRequisition.cshtml" />
     <Content Include="Views\RequestorPage\RequestorInventory.cshtml" />
+    <Content Include="Views\Shared\_LayoutPage1.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianInventory.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianQuotation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

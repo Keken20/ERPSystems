@@ -12,7 +12,5 @@ namespace ERPSystems.Models
         public int TotalItem { get; set; }
         public string RequestorName{ get; set; }
         public string Status{ get; set; }
-        
-        
     }
 }
