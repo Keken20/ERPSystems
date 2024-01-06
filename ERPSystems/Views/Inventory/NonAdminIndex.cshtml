@@ -1,7 +1,7 @@
 ﻿@model IPagedList<ERPSystem.Models.ViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "NonAdminIndex";
     Layout = "~/Views/Shared/_LayoutPage1.cshtml";
 }
 
@@ -16,10 +16,6 @@
 </head>
 <div class="home">
     <div class="temp-container">
-        <div class="left-content">
-            <h2>Index</h2>
-            <p>@Html.ActionLink("ADD ITEM", "Create")</p>
-        </div>
         <div class="right-content">
             @using (Html.BeginForm("Search", "Inventory"))
             {
@@ -127,16 +123,7 @@
                                 @(item.isActive == 1 ? "Active" : "Inactive")
                             </th>
                             <td>
-                                @if (item.isActive == 1)
-                                {
-                                    @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }) @:|
-
-                                    @Html.ActionLink("Delete", "Delete", new { id = item.prod_Id });
-                                }
-                                else
-                                {
-                                    @Html.ActionLink("Reactivate", "Reactivate", new { id = item.prod_Id, pages = ViewBag.Pages, sortName = ViewBag.CurrentSort })
-                                }
+                                @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }) 
                             </td>
                         </tr>
                     }
@@ -144,9 +131,8 @@
             </table>
         </div>
     </div>
-    @Html.PagedListPager(Model, pages => Url.Action("Index", "Inventory", new { pages, sortName = ViewBag.CurrentSort}))
+    @Html.PagedListPager(Model, pages => Url.Action("NonAdminIndex", "Inventory", new { pages, sortName = ViewBag.CurrentSort }))
 </div>
-
 
 
 
