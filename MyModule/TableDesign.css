@@ -1,0 +1,308 @@
+﻿body {
+    font-family: 'lato', sans-serif;
+}
+
+
+.container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+h2 {
+    font-size: 26px;
+    margin: 20px 0;
+    text-align: center;
+    small
+
+{
+    font-size: 0.5em;
+}
+
+}
+
+.responsive-table {
+    li
+
+{
+    border-radius: 3px;
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.table-header {
+    background-color: #95A5A6;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.table-row {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.1);
+}
+
+.col-1 {
+    flex-basis: 10%;
+}
+
+.col-2 {
+    flex-basis: 40%;
+}
+
+.col-3 {
+    flex-basis: 25%;
+}
+
+.col-4 {
+    flex-basis: 25%;
+}
+
+@media all and (max-width: 767px) {
+    .table-header {
+        display: none;
+    }
+
+    .table-row {
+    }
+
+    li {
+        display: block;
+    }
+
+    .col {
+        flex-basis: 100%;
+    }
+
+    .col {
+        display: flex;
+        padding: 10px 0;
+        &:before
+
+{
+    color: #6C7A89;
+    padding-right: 10px;
+    content: attr(data-label);
+    flex-basis: 50%;
+    text-align: right;
+}
+
+}
+}
+}
+
+
+/* form labels */
+.f-horizontal label.control-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* form inputs */
+.f-horizontal input[type="text"],
+.f-horizontal input[type="number"],
+.f-horizontal select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* form submit button */
+.f-horizontal input[type="submit"] {
+    background-color: #007bff; /* Edit button color */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .f-horizontal input[type="submit"]:hover {
+        background-color: #0056b3; 
+    }
+
+/* success and error messages */
+.f-alert {
+    margin-top: 15px;
+}
+
+/* "Back to List" link */
+.r-content a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+}
+
+    .r-content a:hover {
+        text-decoration: underline;
+    }
+
+/* Edit button styles */
+
+.btn-delete {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #dc3545; /* Set your desired background color */
+    color: #fff; /* Set your desired text color */
+    text-decoration: none;
+    border: 1px solid #dc3545; /* Set your desired border color */
+    border-radius: 4px;
+}
+
+    /* Styling for the trash icon */
+    .btn-delete .bx {
+        margin-right: 5px; /* Adjust spacing between text and icon */
+    }
+
+
+.btn-edit {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #007bff; 
+    color: #fff; 
+    text-decoration: none;
+    border: 1px solid #007bff; 
+    border-radius: 4px;
+}
+
+
+    .btn-edit .bx {
+        margin-right: 5px;
+    }
+
+/* Reactivate button styles */
+.btn-reactivate {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #28a745; 
+    color: #fff;
+    text-decoration: none;
+    border: 1px solid #28a745; 
+    border-radius: 4px;
+}
+
+
+    .btn-reactivate .bx {
+        margin-right: 5px;
+    }
+
+    /*pagination*/
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+    .pagination a,
+    .pagination span {
+        padding: 8px 16px;
+        margin: 0 4px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+        }
+
+    .pagination .disabled {
+        color: #aaa;
+        pointer-events: none;
+        background-color: #007bff;
+    }
+
+    .pagination .active {
+        background-color: #0056b3;
+        color: #fff;
+    }
+
+    /*header*/
+.header-container{  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actionLinks {
+    margin: 0;
+    text-align: right;
+}
+
+    actionLinks a {
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 4px;
+}
+
+p a:hover {
+    background-color: #0056b3;
+}
+
+
+/*Search and Sort */
+.my-form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.my-form-group {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+    .my-form-group label {
+        margin-right: 10px;
+    }
+
+.my-form-control {
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.my-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px; 
+}
+
+    .my-btn:hover {
+        background-color: #0056b3;
+    }
+
+.my-link-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+    .my-link-btn:hover {
+        background-color: #0056b3;
+    }

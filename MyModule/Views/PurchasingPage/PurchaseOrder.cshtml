@@ -1,0 +1,152 @@
+﻿@model ERPSystems.Models.RequestModel
+@{
+    ViewBag.Title = "PurchaseOrder";
+    Layout = "~/Views/Shared/_PurchasingPage.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/purchaseorder.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+</head>
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                Purchas Order
+            </h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Purchas Order ID</th>
+                            <th>Request ID</th>
+                            <th>Suppler ID</th>
+                            <th>Total Item</th>
+                            <th>Status</th>
+                            <th>Date Created</th>
+                            <th style="text-align:center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Model.purchaseorder != null)
+                            {
+                                foreach (var i in Model.purchaseorder)
+                                {
+                                    <tr>
+                                        <td>@i.PurId</td>
+                                        <td>@i.ReqId</td>
+                                        <td>@i.SuppId</td>
+                                        <td>@i.PurTotalItem</td>
+                                        <td>@i.PurStatus</td>
+                                        <td>@i.PurCreated</td>
+                                        <td>
+                                            <button class="view" data-pur-id="@i.PurId" data-pur-created="@i.PurCreated">
+                                                View Qoutation
+                                            </button>
+                                            <button>Submit To Top Management</button>
+                                            <button><i class='bx bx-trash'></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div class="invoice-wrapper show" id="print-area">
+        <div class="invoice">
+            <div class="exit">
+                <i class='bx bxs-exit'></i>
+            </div>
+            <div class="invoice-container">
+                <div class="invoice-head">
+                    <div class="invoice-head-top">
+                        <div class="invoice-head-top-left text-start">
+                            <img src="images/logo.png">
+                        </div>
+                        <div class="invoice-head-top-right text-end">
+                            <h3>Purchase Order Request</h3>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="invoice-head-middle">
+                        <div class="invoice-head-middle-left text-start">
+                            <p><span class="text-bold">Date</span>:<input id="reqdate" readonly style="border:none" /></p>
+                        </div>
+                        <div class="invoice-head-middle-right text-end"> 
+                          <p><span class="text-bold">Purchase Order No</span>:<input type="text" style="border:none" readonly id="purid" /></p>
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                    <div class="invoice-head-bottom">
+                        <div class="invoice-head-bottom-left">
+                            <ul class="ul-group">
+                                <li class='text-bold'>Request From:</li>                        
+                                    <li><input type="text"  id="reqname" readonly style="border:none" /></li>
+                                    <li>15 Hodges Mews, High Wycombe</li>
+                                    <li>HP12 3JL</li>
+                                    <li>United Kingdom</li>
+                                </ul>
+                        </div>
+                        <div class="invoice-head-bottom-right">
+                            <ul class="ul-group text-end">
+                                <li class='text-bold'>Send To:</li>
+                                <li>Top Management</li>
+                                <li>2705 N. Enterprise</li>
+                                <li>Orange, CA 89438</li>
+                                <li>contact@koiceinc.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="overflow-view">
+                    <div class="invoice-body">
+                        <table>
+                            <thead id="dataTableHead">
+                                <tr>
+                                    <td class="text-bold">Product Id</td>
+                                    <td class="text-bold">Product Name</td>
+                                    <td class="text-bold">Description</td>
+                                    <td class="text-bold">Unit</td>
+                                    <td class="text-bold">Quantity</td>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="invoice-foot text-center">
+                    <p><span class="text-bold text-center">NOTE:&nbsp;</span>This is computer generated receipt and does not require physical signature.</p>
+                    <div class="invoice-btns">
+                        <button type="button" class="invoice-btn" id="checkinventory">
+                            <span>
+                                <i class='bx bxs-data'></i>
+                            </span>
+                            <span>Check Inventory</span>
+                        </button>
+                        <div class="dropdown">
+                            <button type="button" id="dropdown" class="invoice-btn dropdown">
+                                <span>
+                                    <i class='bx bxs-down-arrow'></i>
+                                </span>
+                                <span>Action</span>
+                            </button>
+                            <div class="dropdown-content">
+                                <a class="approve" id="dropdown1" href="#">Approve</a>
+                                <a class="submit" id="dropdown2" href="#">Submit to Top Management</a>
+                                <a class="disapprove" id="dropdown3" href="#">Disapprove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/purchaseorder.js"></script>
