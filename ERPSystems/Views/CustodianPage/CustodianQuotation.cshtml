@@ -40,12 +40,12 @@
                                         <td>@i.PurDate</td>
                                         <td>@i.Status</td>
                                         <td>
-                                            <button class="create" data-pur-id="@i.PurID" data-pur-date="@i.PurDate">
-                                                <i class='bx bx-plus'>Create Quotation</i>
+                                            <button class="create" data-pur-id="@i.PurID" data-pur-date="@i.PurDate" style="background-color: #d4edda; color: #155724; border: 1px solid; padding: 2px">
+                                                <i class='bx bx-plus'>Create</i>
                                             </button>
-                                            @*<button class="delete" data-quote-id="@i.QuoteID">
+                                            <button class="delete" data-quote-id="@i.QuoteID" style="background-color: #f8d7da; color: #721c24; border: 1px solid; padding: 2px">
                                                 <i class='bx bx-trash'>Delete</i>
-                                            </button>*@
+                                            </button>
                                         </td>
                                     </tr>
                                 }
@@ -84,12 +84,18 @@
                         <div class="invoice-head-bottom-left" id="supplierInfo">
                             <ul class="ul-group">
                                 <li class='text-bold'>Quotation From:</li>
-                                <li><input id="suppname" type="text"/></li>
-                                <li><input id="suppzcode" type="text"/></li>
-                                <li><input id="suppbarangay" type="text"/></li>
-                                <li><input id="suppcity" type="text"/></li>
-                                <li><input id="suppmunicipality" type="text"/></li>
-                                <li><input id="suppphone" type="text"/></li>
+                                <li>Company Name</li>
+                                <li><input id="suppname" type="text" /></li>
+                                <li>Zip Code</li>
+                                <li><input id="suppzcode" type="text" /></li>
+                                <li>Barangay</li>
+                                <li><input id="suppbarangay" type="text" /></li>
+                                <li>City</li>
+                                <li><input id="suppcity" type="text" /></li>
+                                <li>Municipality</li>
+                                <li><input id="suppmunicipality" type="text" /></li>
+                                <li>Phone No# </li>
+                                <li><input id="suppphone" type="text" /></li>
                             </ul>
                         </div>
                     </div>
@@ -104,6 +110,8 @@
                                     <td class="text-bold">Description</td>
                                     <td class="text-bold">Quantity</td>
                                     <td class="text-bold">Unit</td>
+                                    <td class="text-bold">UnitPrice</td>
+                                    <td class="text-bold">Discount</td>
                                 </tr>
                             </thead>
                             <tbody id="dataTableBody">
@@ -111,10 +119,20 @@
                         </table>
                     </div>
                 </div>
+                <div class="quotation-form" id="prices">
+                    <div class="result-group">
+                        <label for="subtotal">Subtotal:</label>
+                        <input type="text" id="subtotal" readonly>
+                    </div>
+                    <div class="result-group">
+                        <label for="total">Total:</label>
+                        <input type="text" id="total" readonly>
+                    </div>
+                </div>
                 <div class="invoice-foot text-center">
                     <p><span class="text-bold text-center">NOTE:&nbsp;</span>This is computer generated receipt and does not require physical signature.</p>
                     <div class="invoice-btns">
-                        <button type="button" class="invoice-btn" onclick="saveSupplierInfo()" style="background-color: #d4edda; color: #155724;">
+                        <button type="button" class="invoice-btn" onclick="saveQuotation()" style="background-color: #d4edda; color: #155724;">
                             <span>
                                 <i class="fas fa-check"></i>
                             </span>

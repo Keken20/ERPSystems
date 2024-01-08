@@ -13,7 +13,6 @@ namespace ERPSystems.Controllers
     public class CustodianPageController : Controller
     {
         // GET: CustodianPage
-        int purid;
         int recordAffected;
         int prodid;
         int quoteid;
@@ -26,7 +25,7 @@ namespace ERPSystems.Controllers
         List<QuoteForm> quoteForms = new List<QuoteForm>();
         List<QuoteItem> quoteItems = new List<QuoteItem>();
         List<QuoteFormItem> quoteformitems = new List<QuoteFormItem>();
-        List<QuotePrice> quotePrices = new List<QuotePrice>();
+        List<QuotePrice> tableData = new List<QuotePrice>();
 
         [HttpGet]
         private void connnectionString()
@@ -149,9 +148,8 @@ namespace ERPSystems.Controllers
                                 quoteForms.Add(new QuoteForm
                                 {
                                     PurID = int.Parse(reader["PurId"].ToString()),
-                                    PurDate = DateTime.Parse(reader["PurCreateAt"].ToString()),
+                                    PurDate = DateTime.Parse(reader["PurCreatedAt"].ToString()),
                                     Status = reader["PurStatus"].ToString(),
-                                    //IsDelete = int.Parse(reader["PurIsDelete"].ToString()),
                                 });
                             }
                             connection.Close();
@@ -188,7 +186,7 @@ namespace ERPSystems.Controllers
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SELECT PurId, Product.ProdId, ProdName, ProdDescription, ProdQuantityReceived, PurUnit FROM PurchaseOrderItem INNER JOIN Product ON PurchaseOrderItem.ProdId = Product.ProdId WHERE PurId = @purid", connection))
+                    using (SqlCommand command = new SqlCommand("SELECT PurId, Product.ProdId, ProdName, ProdDescription, PurQuantity, PurUnit FROM PurchaseOrderItem INNER JOIN Product ON PurchaseOrderItem.ProdId = Product.ProdId WHERE PurId = @purid", connection))
                     {
                         command.Parameters.AddWithValue("@purid", purid);
 
@@ -202,10 +200,11 @@ namespace ERPSystems.Controllers
                                     ProdId = int.Parse(reader["ProdId"].ToString()),
                                     ProdName = reader["ProdName"].ToString(),
                                     Description = reader["ProdDescription"].ToString(),
-                                    Quantity = int.Parse(reader["ProdQuantityReceived"].ToString()),
+                                    Quantity = int.Parse(reader["PurQuantity"].ToString()),
                                     Unit = reader["PurUnit"].ToString(),
                                 });
                             }
+                            con.Close();
                         }
                     }
                 }
@@ -220,73 +219,8 @@ namespace ERPSystems.Controllers
 
             return quoteItems;
         }
-
-        ////public ActionResult CreateQuotationForm(int id)
-        ////{
-        ////    try
-        ////    {
-        ////        if (!QuotationCheck(id))
-        ////        {
-        ////            connnectionString();
-        ////            con.Open();
-        ////            com.Connection = con;
-        ////            com.CommandText = "Insert into QoutationForm(PurId)values(@purid)";
-        ////            com.Parameters.AddWithValue("@purid", id);
-        ////            recordAffected = com.ExecuteNonQuery();
-        ////            con.Close();
-        ////            if (recordAffected > 0)
-        ////            {
-        ////                return Json(new { success = true, message = "Quotation form created successfully" });
-        ////            }
-        ////            else
-        ////            {
-        ////                recordAffected = 0;
-        ////                return Json(new { success = false, message = "Failed to create Quotation form" });
-        ////            }
-        ////        }
-        ////        else
-        ////        {
-        ////            return Json(new { success = false, message = "Quotation is already approved" });
-        ////        }
-
-        ////    }
-        ////    catch (Exception e)
-        ////    {
-        ////        Response.Write(e.Message);
-        ////        return Json(new { success = false, message = "An error occurred" });
-        ////    }
-        ////    finally
-        ////    {
-        ////        if (con.State == ConnectionState.Open)
-        ////        {
-        ////            con.Close();
-        ////        }
-        ////    }
-        ////}
-        ////public bool QuotationCheck(int id)
-        ////{
-        ////    connnectionString();
-        ////    con.Open();
-        ////    com.Connection = con;
-        ////    com.CommandText = "Select * from QoutationForm where PurId = @purid";
-        ////    com.Parameters.AddWithValue("@purid", id);
-        ////    dr = com.ExecuteReader();
-        ////    while (dr.Read())
-        ////    {
-        ////        purid = int.Parse(dr["PurId"].ToString());
-        ////    }
-        ////    con.Close();
-        ////    if (id == purid)
-        ////    {
-        ////        return true;
-        ////    }
-        ////    else
-        ////    {
-        ////        return false;
-        ////    }
-        ////}
         [HttpPost]
-        public ActionResult SaveQuotationForm(List<QuotePrice> tableData, string purId, string suppname, string suppzipcode, string suppbarangay, string suppcity, string suppmunicipality, string suppphone)
+        public ActionResult CreateQuotationForm(int purid, QuoteFormItem supplierInfo)
         {
             try
             {
@@ -294,27 +228,47 @@ namespace ERPSystems.Controllers
                 con.Open();
                 com.Connection = con;
 
-                // Check if the quotation form exists
-                com.CommandText = "SELECT PurId FROM PurchaseOrderForm WHERE PurId = @id";
-                com.Parameters.AddWithValue("@id", int.Parse(purId));
+                com.Parameters.Clear();
+                com.CommandText = "SELECT * FROM PurchaseOrderForm WHERE PurId = @purchaseOrderId";
+                com.Parameters.AddWithValue("@purchaseOrderId", purid);
                 dr = com.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    purid = int.Parse(dr["PurId"].ToString());
+                    int purchaseOrderId = int.Parse(dr["PurId"].ToString());
                 }
 
                 dr.Close();
 
+                QuoteFormItem quoteFormItem = new QuoteFormItem
+                {
+                    PurID = purid,
+                    SupplierName = supplierInfo.SupplierName,
+                    SupplierZipcode = supplierInfo.SupplierZipcode,
+                    SupplierBarangay = supplierInfo.SupplierBarangay,
+                    SupplierCity = supplierInfo.SupplierCity,
+                    SupplierMunicipality = supplierInfo.SupplierMunicipality,
+                    SupplierPhone = supplierInfo.SupplierPhone,
+                    Subtotal = supplierInfo.Subtotal,
+                    Discount = supplierInfo.Discount,
+                    TotalPrice = supplierInfo.TotalPrice,
+                };
+
+                // Insert a new quotation form
                 com.Parameters.Clear();
-                com.CommandText = "INSERT INTO QoutationForm (PurId, SuppName, SuppZipCode, SuppBarangay, SuppCity, SuppMunicipality, SuppPhone) VALUES (@id, @suppname, @suppzipcode, @suppbarangay, @suppcity, @suppmunicipality, @suppphone)";
+                com.CommandText = "INSERT INTO QoutationForm (PurId, SuppName, SuppZipCode, SuppBarangay, SuppCity, SuppMunicipality, SuppPhone, QouteSubtotal, QouteDiscount, QouteTotal) " +
+                                  "VALUES (@id, @suppname, @suppzipcode, @suppbarangay, @suppcity, @suppmunicipality, @suppphone, @quotesub, @quotediscount, @quotetotal)";
+
                 com.Parameters.AddWithValue("@id", purid);
-                com.Parameters.AddWithValue("@suppname", suppname);
-                com.Parameters.AddWithValue("@suppzipcode", suppzipcode);
-                com.Parameters.AddWithValue("@suppbarangay", suppbarangay);
-                com.Parameters.AddWithValue("@suppcity", suppcity);
-                com.Parameters.AddWithValue("@suppmunicipality", suppmunicipality);
-                com.Parameters.AddWithValue("@suppphone", suppphone);
+                com.Parameters.AddWithValue("@suppname", supplierInfo.SupplierName);
+                com.Parameters.AddWithValue("@suppzipcode", supplierInfo.SupplierZipcode);
+                com.Parameters.AddWithValue("@suppbarangay", supplierInfo.SupplierBarangay);
+                com.Parameters.AddWithValue("@suppcity", supplierInfo.SupplierCity);
+                com.Parameters.AddWithValue("@suppmunicipality", supplierInfo.SupplierMunicipality);
+                com.Parameters.AddWithValue("@suppphone", supplierInfo.SupplierPhone);
+                com.Parameters.AddWithValue("@quotesub", supplierInfo.Subtotal);
+                com.Parameters.AddWithValue("@quotediscount", supplierInfo.Discount);
+                com.Parameters.AddWithValue("@quotetotal", supplierInfo.TotalPrice);
 
                 recordAffected = com.ExecuteNonQuery();
 
@@ -323,51 +277,84 @@ namespace ERPSystems.Controllers
                     return Json(new { success = false, message = "Failed to create Quotation form" });
                 }
 
-                // Retrieve the newly created QouteId
-                com.Parameters.Clear();
-                com.CommandText = "SELECT QouteId FROM QoutationForm WHERE SuppName = @suppname";
-                com.Parameters.AddWithValue("@suppname", suppname);
-                dr = com.ExecuteReader();
-
-                while (dr.Read())
-                {
-                    quoteid = int.Parse(dr["QouteId"].ToString());
-                }
-
-                dr.Close();
-
-                // Save QuotationItem data
-                com.Parameters.Clear();
-                com.CommandText = "INSERT INTO QoutationItem (QouteId, ProdId, QouteQuantity, QouteUnit, QoutePricePerUnit) VALUES (@quoteid, @prodid, @quotequantity, @quoteunit, @quoteunitprice)";
-
-                foreach (var row in tableData)
-                {
-                    com.Parameters.Clear();
-                    prodid = int.Parse(row.ProdId);
-                    com.Parameters.AddWithValue("@quoteid", quoteid);
-                    com.Parameters.AddWithValue("@prodid", row.ProdId);
-                    com.Parameters.AddWithValue("@quotequantity", row.QuoteQuantity);
-                    com.Parameters.AddWithValue("@quoteunit", row.QuoteUnit);
-                    com.Parameters.AddWithValue("@quoteunitprice", row.UnitPrice);
-                    recordAffected = com.ExecuteNonQuery();
-
-                    if (recordAffected <= 0)
-                    {
-                        return Json(new { success = false, message = "Failed to insert data into QuotationItem" });
-                    }
-                }
-
+                return Json(new { success = true, message = "Quotation form created successfully", quoteFormItem });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return Json(new { success = false, message = "An error occurred: " + e.Message });
+            }
+            finally
+            {
                 con.Close();
+            }
+        }
+        [HttpPost]
+        public ActionResult SaveQuotationForm(List<QuotePrice> tableData, string suppname)
+        {
+            try
+            {
+                connnectionString();
 
-                return Json(new { success = true, message = "Data saved successfully" });
+                using (SqlConnection con = new SqlConnection(Properties.Resources.ConnectionString))
+                {
+                    con.Open();
+                    using (SqlCommand com = new SqlCommand())
+                    {
+                        com.Connection = con;
+                        com.Parameters.Clear();
+                        com.CommandText = "SELECT * FROM QoutationForm WHERE SuppName = @suppname";
+                        com.Parameters.AddWithValue("@suppname", suppname);
+
+                        using (SqlDataReader dr = com.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                quoteid = int.Parse(dr["QouteId"].ToString());
+                            }
+                            else
+                            {
+                                return Json(new { success = false, message = "Invalid QuoteId" });
+                            }
+                        }
+                    }
+
+                    using (SqlCommand com = new SqlCommand())
+                    {
+                        com.Connection = con;
+                        com.CommandText = "INSERT INTO QoutationItem (QouteId, ProdId, QouteQuantity, QouteUnit, QoutePricePerUnit) VALUES (@quoteid, @prodid, @quotequantity, @quoteunit, @quoteunitprice)";
+
+                        foreach (var row in tableData)
+                        {
+                            Console.WriteLine($"ProdId: {row.ProdId}, QouteQuantity: {row.QuoteQuantity}, QouteUnit: {row.QuoteUnit}, QoutePricePerUnit: {row.UnitPrice}");
+
+                            prodid = int.Parse(row.ProdId);
+                            com.Parameters.AddWithValue("@quoteid", quoteid);
+                            com.Parameters.AddWithValue("@prodid", prodid);
+                            com.Parameters.AddWithValue("@quotequantity", row.QuoteQuantity);
+                            com.Parameters.AddWithValue("@quoteunit", row.QuoteUnit);
+                            com.Parameters.AddWithValue("@quoteunitprice", row.UnitPrice);
+
+                            int recordAffected = com.ExecuteNonQuery();
+
+                            com.Parameters.Clear();
+
+                            if (recordAffected <= 0)
+                            {
+                                return Json(new { success = false, message = "Failed to insert data into QuotationItem" });
+                            }
+                        }
+                    }
+
+                    return Json(new { success = true, message = "Data saved successfully" });
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return Json(new { success = false, message = "Error occurred while processing the request" });
+                return Json(new { success = false, message = "An error occurred while processing the request" });
             }
         }
-
         public ActionResult CustodianInventory()
         {
             List<Inventory> inventory = new List<Inventory>();
