@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Account";
+    Layout = "~/Views/Shared/_AdminPage.cshtml";
+    string[] TableHeaders = new string[] { "userID"
+          ,"userName"
+          ,"userPassword"};
+}
+<head>
+    <link href="~/Style/account.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                User Account
+
+            </h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Model != null)
+                            {
+                                foreach (var Data in Model)
+                                {
+                                    <tr>
+                                        <td>@Data.UserID</td>
+                                        <td>@Data.UserFullName</td>
+                                        <td>@Data.UserName</td>
+                                        <td>@Data.UserPassword</td>
+                                        <td>
+                                            <button class="view" data-user-id="@Data.UserID" data-user-fullname="@Data.UserFullName" data-user-name="@Data.UserName" data-user-password="@Data.UserPassword"
+                                                    data-user-type="@Data.UserType">
+                                                <i class='bx bx-edit-alt'></i>
+                                            </button>
+                                            <button><i class='bx bx-trash'></i></button>
+                                        </td>
+
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div id="crud-modal" class="modal show">
+        <div class="modal-content">
+            <button class="closed" onclick="closeModal()">&times;</button>
+            <h2>Edit User</h2>
+            <form id="update-form" action="Account" method="post">
+                <input type="hidden" id="userId" name="userId" />
+                <label for="userName">Fullname:</label>
+                <input type="text" readonly id="userFullName" name="userFullName" />
+                <label for="userName">Username:</label>
+                <input type="text" readonly id="userName" name="userName" />
+                <label for="userPassword">Password:</label>
+                <input type="text" readonly id="userPassword" name="userPassword" />
+                <label for="userPassword">User Type:</label>
+                <input type="text" id="userType" name="userType" />
+                <div class="submitbtn">
+                    <button type="submit">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Scripts/account.js"></script>
+</section>
+
+

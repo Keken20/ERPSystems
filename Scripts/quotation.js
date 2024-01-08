@@ -1,70 +1,36 @@
 ﻿var Purid;
-var PurInfo;
-var PurItem;
+var supplierInfo;
+var prices;
 var QuoteItems;
-
-function saveSupplierInfo() {
-    // Gather input values
-    var supplierInfo = {
-        suppname: $('#suppname').val(),
-        suppzipcode: $('#suppzcode').val(),
-        suppbarangay: $('#suppbarangay').val(),
-        suppcity: $('#suppcity').val(),
-        suppmunicipality: $('#suppmunicipality').val(),
-        suppphone: $('#suppphone').val()
-    };
-
-    // Perform AJAX request to save data
-    $.ajax({
-        type: 'POST',
-        url: '/CustodianPage/SaveQuotationForm', // Replace with the actual URL
-        data: supplierInfo,
-        success: function (response) {
-            console.log('Received save response:', response);
-
-            // Display a message or take appropriate action based on the response
-            if (response.success) {
-                alert(response.message);
-            } else {
-                alert('Failed to save data: ' + response.message);
-            }
-        },
-        error: function (error) {
-            console.error('Error:', error);
-        }
-    });
-}
-
-
-function goBack() {
-    // Hide the modal
-    $('.invoice-wrapper.show').hide();
-}
+var tableData;
+var rowData;
+var quoteid;
+var SupplierName;
 
 $(document).ready(function () {
     // Show modal on view button click
     $('.create').on('click', function () {
-        PurId = $(this).data('pur-id');
-        console.log("PurId:", PurId)
+        Purid = $(this).data('pur-id');
+        console.log("PurId:", Purid);
         var PurDate = $(this).data('pur-date');
         var tableBody = $('#dataTableBody');
-        $('#purid').val(PurId);
+        $('#purid').val(Purid);
         $('#purdate').val(PurDate);
 
-        tableBody.empty();
+        clearInputs();
 
         $.ajax({
             type: 'POST',
             url: '/CustodianPage/ReceivedQuoteItem',
-            data: { id: PurId },
+            data: { id: Purid },
             success: function (response) {
                 // Handle the response from the server
                 console.log('Received response:', response);
 
-                // Assign the response to the ReqItems variable
-                QuoteItems = response.quoteItems;
+                // Assign the response to the QuoteItems variable
+                tableData = response.quoteItems;
 
-                QuoteItems.forEach(function (quoteItemObject) {
+                tableData.forEach(function (quoteItemObject) {
                     // Create a new row
                     var row = $('<tr>');
 
@@ -72,77 +38,50 @@ $(document).ready(function () {
                     row.append($('<td>').text(quoteItemObject.ProdId));
                     row.append($('<td>').text(quoteItemObject.ProdName));
                     row.append($('<td>').text(quoteItemObject.Description));
+
+                    console.log('Quantity from response:', quoteItemObject.Quantity);
+                    // Create input elements for quantity, unit price, and discount
+                    var quantityInput = $('<input>').attr({
+                        'type': 'text',
+                        'style': 'width:80px; text-align: center;',
+                        'class': 'quantityInput',
+                        'readonly': 'readonly',
+                        'value': quoteItemObject.Quantity
+                    });
+
+                    row.append($('<td>').append(quantityInput));
+
                     row.append($('<td>').text(quoteItemObject.Unit));
-                    row.append($('<td>').text(quoteItemObject.Quantity));
+
+                    var unitPriceInput = $('<input>').attr({
+                        'type': 'text',
+                        'style': 'width:80px; text-align: center;',
+                        'class': 'unitPriceInput',
+                        'oninput': 'calculate()'
+                    });
+                    row.append($('<td>').append(unitPriceInput));
+
+                    var discountInput = $('<input>').attr({
+                        'type': 'text',
+                        'style': 'width:80px; text-align: center;',
+                        'class': 'discountInput',
+                        'oninput': 'calculate()'
+                    });
+                    row.append($('<td>').append(discountInput));
+
                     // Add the row to the table body
                     tableBody.append(row);
                 });
-                console.log('QuoteItems:', QuoteItems);
+
+                calculate();
+                console.log('tableData:', tableData);
             },
             error: function (error) {
                 console.error('Error:', error);
             },
         });
+
         $('.invoice-wrapper.show').show();
-
-        ////var allrow = $('#dataTableBody tr');
-        ////$.ajax({
-        ////    type: 'POST',
-        ////    url: '/CustodianPage/SaveQuotationForm',
-        ////    data: { id: PurId },
-        ////    dataType: 'json',
-        ////    success: function (success) {
-        ////        // Handle success, update the view if needed
-        ////        alert(success.message);
-        ////        head.append($('<td class="text-bold">').text('Purchase Quantity'));
-        ////        allrow.each(function (i) {
-        ////            var inputField = $('<input>').attr('type', 'text', 'style', 'width:85px');
-        ////            inputField.css('width', '60px');
-
-        ////            // Append the input field and button to the current row
-        ////            $(this).append($('<td>').append(inputField));
-
-        ////            console.log("Row:", i + 1);
-        ////        });
-        ////        $('#dataTableBody tr').each(function (p) {
-        ////            var clickedRow = $(this).closest('tr');
-        ////            var cells = clickedRow.find('td');
-        ////            rowData = {};
-
-        ////            cells.each(function (j) {
-        ////                var cellContent = $(this).find('input').length > 0 ? $(this).find('input').val() : $(this).text();
-        ////                rowData['column' + (j + 1)] = cellContent;
-        ////            });
-
-        ////            if (p + 1 === rowId) {
-        ////                tableData.push(rowData);
-        ////            }
-        ////        });
-        ////        var jsonData = JSON.stringify({ tableData: tableData, reqid: ReqId });
-        ////        console.log('Data', jsonData);
-        ////        $.ajax({
-        ////            type: 'POST',
-        ////            url: '/PurchasingPage/SaveProductToPO',
-        ////            data: jsonData,
-        ////            contentType: 'application/json; charset=utf-8',
-        ////            dataType: 'json',
-        ////            success: function (response) {
-        ////                // Handle the success response from the server
-        ////                console.log(response);
-
-        ////                // You can show a success message or perform other actions
-        ////                alert(response.message);
-        ////            },
-        ////            error: function (jqXHR, textStatus, errorThrown) {
-        ////                // Handle the error response from the server
-        ////                console.error('AJAX Error:', textStatus, errorThrown);
-
-        ////                // You can show an error message or perform other actions
-        ////                alert('Error saving data. Please try again.');
-        ////            }
-        ////        });
-        ////    }
-        ////});
     });
 
     // Delete button click
@@ -181,10 +120,155 @@ $(document).ready(function () {
                     console.error('Error:', error);
                 }
             });
-        }
-        else {
+        } else {
             // User clicked Cancel on the confirmation dialog
             console.log('Deletion canceled.');
         }
     });
 });
+
+function saveQuotation() {
+    supplierInfo = {
+        quoteid: $('#quoteid').val(),
+        suppname: $('#suppname').val(),
+        suppzipcode: $('#suppzcode').val(),
+        suppbarangay: $('#suppbarangay').val(),
+        suppcity: $('#suppcity').val(),
+        suppmunicipality: $('#suppmunicipality').val(),
+        suppphone: $('#suppphone').val()
+    };
+
+    prices = {
+        subtotal: $('#subtotal').val(),
+        discount: $('[class^="discountInput"]').val(),
+        total: $('#total').val()
+    };
+
+    quoteFormItem = {
+        PurID: Purid,
+        QuoteId: supplierInfo.quoteid,
+        SupplierName: supplierInfo.suppname,
+        SupplierZipcode: supplierInfo.suppzipcode,
+        SupplierBarangay: supplierInfo.suppbarangay,
+        SupplierCity: supplierInfo.suppcity,
+        SupplierMunicipality: supplierInfo.suppmunicipality,
+        SupplierPhone: supplierInfo.suppphone,
+        Subtotal: prices.subtotal,
+        Discount: prices.discount,
+        TotalPrice: prices.total
+    };
+
+    console.log('info', supplierInfo);
+    console.log('prices', prices);
+
+    // Perform AJAX request to save data
+    $.ajax({
+        type: 'POST',
+        url: '/CustodianPage/CreateQuotationForm',
+        data: JSON.stringify({ purid: Purid, supplierInfo: quoteFormItem, prices: prices }),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function (response) {
+            // Handle success, update the view if needed
+            alert(response.message);
+
+            // Proceed to save QuotationItem after successful QuotationForm insertion
+            saveQuotationItem();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('AJAX Error:', textStatus, errorThrown);
+            console.log('Response Text:', jqXHR.responseText);
+            console.log('Response JSON:', jqXHR.responseJSON);
+            alert('Error creating quotation form. Please try again.');
+        }
+    });
+}
+
+function saveQuotationItem() {
+    // Perform AJAX request to fetch quoteid from the database
+    tableData = [];
+
+    // Iterate over each row in the table body
+    $('#dataTableBody tr').each(function (index) {
+        var row = $(this);
+        var rowData = {};
+        var rowCells = row.find('td');
+
+        rowCells.each(function (j) {
+            var cellContent = $(this).find('input').length > 0 ? $(this).find('input').val() : $(this).text();
+            rowData['column' + (j + 1)] = cellContent;
+        });
+
+        tableData.push(rowData);
+    });
+
+    var jsonData = JSON.stringify({
+        tableData: tableData,
+        suppname: supplierInfo.suppname
+    });
+
+    console.log('Response Json', jsonData);
+
+    $.ajax({
+        type: 'POST',
+        url: '/CustodianPage/SaveQuotationForm',
+        data: jsonData,
+        contentType: 'application/json',
+        success: function (response) {
+            if (response.success && response.quoteid !== undefined) {
+                // Fetched quoteid successfully
+                quoteId = response.quoteid;
+                SupplierName = response.suppname;
+                console.log(`Fetched quoteid successfully: ${response.quoteid}`);
+                alert(response.message);
+            } else {
+                alert('Failed to fetch quoteid. Please try again.');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error('AJAX Error:', textStatus, errorThrown);
+            alert('Error fetching quoteid. Please try again.');
+        }
+    });
+
+    console.log('Table Data:', tableData);
+}
+
+function clearInputs() {
+    $('#dataTableBody').empty();
+    $('#quantityInput, #unitPriceInput, #discountInput').val('');
+    $('#suppname, #suppzcode, #suppbarangay, #suppcity, #suppmunicipality, #suppphone, #subtotal, #total').val('');
+}
+
+function goBack() {
+    // Hide the modal
+    $('.invoice-wrapper.show').hide();
+}
+
+function calculate() {
+    // Calculate subtotal for each row and update the total
+    var totalSubtotal = 0;
+    var totalDiscount = 0;
+
+    $('[class^="quantityInput"]').each(function (index) {
+        var quantity = parseFloat($(this).val()) || 0;
+        var unitPrice = parseFloat($('[class^="unitPriceInput"]').eq(index).val()) || 0;
+        var discount = parseFloat($('[class^="discountInput"]').eq(index).val()) || 0;
+        var discountPercent = discount / 100;
+
+        var subtotal = quantity * unitPrice;
+        totalSubtotal += subtotal;
+
+        // Calculate discount for each row and update total discount
+        var rowDiscount = subtotal * discountPercent;
+        totalDiscount += rowDiscount;
+    });
+
+    // Update result inputs
+    $('#subtotal').val(totalSubtotal.toFixed(2));
+    $('#totalDiscount').val(totalDiscount.toFixed(2));
+
+    // Calculate total after applying discount
+    var total = totalSubtotal - totalDiscount;
+    $('#total').val(total.toFixed(2));
+}

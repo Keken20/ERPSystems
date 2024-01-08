@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width-device-width, initial-scale=1.0">
+    <link href="~/Style/style.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <nav class="sidebar close ">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="https://static-00.iconduck.com/assets.00/mobile-wallet-icon-2048x2048-r1ma8olm.png" alt="logo">
+                </span>
+
+                <div class="text header-text">
+                    <span class="name">ERP</span>
+                    <span class="profession">System</span>
+                </div>
+            </div>
+            <i class='bx bx-chevron-right toggle'></i>
+        </header>
+
+        <div class="menu-bar">
+            <div class="menu">
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="@Url.Action("CustodianDashboard","CustodianPage")">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="@Url.Action("CustodianQuotation","CustodianPage")">
+                            <i class='bx bx-purchase-tag-alt icon'></i>
+                            <span class="text nav-text">Create Quotation</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="@Url.Action("CustodianPurchaseOrder","CustodianPage")">
+                            <i class='bx bx-user icon'></i>
+                            <span class="text nav-text">Check PO</span>
+                        </a>
+                    </li>
+                    <li class="nav-link">
+                        <a href="@Url.Action("CustodianInventory","CustodianPage")">
+                            <i class='bx bx-data icon'></i>
+                            <span class="text nav-text">Inventory</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <li>
+                    <a href="@Url.Action("Login", "Home")">
+                        <i class='bx bx-log-out icon'></i>
+                        <span class="text nav-text">Logout</span>
+                    </a>
+                </li>
+            </div>
+        </div>
+
+    </nav>
+    @RenderBody()
+
+    <script>
+        $(function () {
+            const body = document.querySelector("body"),
+                sidebar = body.querySelector(".sidebar"),
+                toggle = body.querySelector(".toggle"),
+                searchBtn = body.querySelector(".search-box"),
+                modeText = body.querySelector(".mode-text");
+
+            toggle.addEventListener("click", () => {
+                sidebar.classList.toggle("close");
+            });
+        })
+    </script>
+</body>
+</html>
