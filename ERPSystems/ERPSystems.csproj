@@ -52,6 +52,12 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -128,7 +134,23 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CustodianPageController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Data\AlgorithmDAO.cs" />
+    <Compile Include="Data\CategoryDAO.cs" />
+    <Compile Include="Data\InventoryDAO.cs" />
+    <Compile Include="Data\ProductDAO.cs" />
+    <Compile Include="Data\RequestorDAO.cs" />
+    <Compile Include="Data\SupplierDAO.cs" />
+    <Compile Include="Models\Algorithm.cs" />
+    <Compile Include="Models\CategoryModel.cs" />
+    <Compile Include="Models\InventoryModel.cs" />
+    <Compile Include="Models\ItemRequestModel.cs" />
+    <Compile Include="Models\PriorityItem.cs" />
+    <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Models\ProductToPO.cs" />
     <Compile Include="Models\PurchaseOrderFormInfo.cs" />
     <Compile Include="Models\PurchaseOrderItem.cs" />
@@ -143,9 +165,19 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Inventory.cs" />
+    <Compile Include="Models\QuotationForm.cs" />
+    <Compile Include="Models\QuotationItem.cs" />
+    <Compile Include="Models\QuoteForm.cs" />
+    <Compile Include="Models\QuoteFormItem.cs" />
+    <Compile Include="Models\QuoteItem.cs" />
+    <Compile Include="Models\QuoteModel.cs" />
+    <Compile Include="Models\QuotePrice.cs" />
     <Compile Include="Models\RequestForm.cs" />
     <Compile Include="Models\RequestItem.cs" />
     <Compile Include="Models\RequestModel.cs" />
+    <Compile Include="Models\Supplier.cs" />
+    <Compile Include="Models\SupplierInfo.cs" />
+    <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -158,6 +190,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -206,10 +239,23 @@
     <Content Include="Image\1.png" />
     <Content Include="Image\2.png" />
     <Content Include="Scripts\account.js" />
+    <Content Include="Scripts\adminquotepagelist.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\Cabin-Regular.ttf" />
     <Content Include="fonts\Cabin-SemiBold.ttf" />
+    <Content Include="fonts\Roboto-Black.ttf" />
+    <Content Include="fonts\Roboto-BlackItalic.ttf" />
+    <Content Include="fonts\Roboto-Bold.ttf" />
+    <Content Include="fonts\Roboto-BoldItalic.ttf" />
+    <Content Include="fonts\Roboto-Italic.ttf" />
+    <Content Include="fonts\Roboto-Light.ttf" />
+    <Content Include="fonts\Roboto-LightItalic.ttf" />
+    <Content Include="fonts\Roboto-Medium.ttf" />
+    <Content Include="fonts\Roboto-MediumItalic.ttf" />
+    <Content Include="fonts\Roboto-Regular.ttf" />
+    <Content Include="fonts\Roboto-Thin.ttf" />
+    <Content Include="fonts\Roboto-ThinItalic.ttf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -223,18 +269,28 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\pojs.js" />
     <Content Include="Scripts\purchaseorder.js" />
+    <Content Include="Scripts\quotation.js" />
+    <Content Include="Scripts\quotationbehavior.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\request.js" />
+    <Content Include="Scripts\requestlist.js" />
     <Content Include="Scripts\requestpage.js" />
     <Content Include="Style\123.css" />
     <Content Include="Style\account.css" />
     <Content Include="Style\homepagestyle.css" />
+    <Content Include="Scripts\popage.js" />
     <Content Include="Style\purchaseorder.css" />
+    <Content Include="Style\QoutePage.css" />
+    <Content Include="Style\quotation.css" />
     <Content Include="Style\register.css" />
     <Content Include="Style\request.css" />
+    <Content Include="Style\requestlist.css" />
     <Content Include="Style\requestpage.css" />
+    <Content Include="Style\settings.css" />
     <Content Include="Style\style.css" />
+    <Content Include="Style\TableDesign.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -247,7 +303,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Shared\_AdminPage.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\VerifyUser.cshtml" />
@@ -258,19 +313,47 @@
     <Content Include="Views\AdminPage\PurchaseRequest.cshtml" />
     <Content Include="Views\AdminPage\Supplier.cshtml" />
     <Content Include="Views\Shared\_PurchasingPage.cshtml" />
-    <Content Include="Views\PurchasingPage\PurchasingDashboard.cshtml" />
     <Content Include="Views\PurchasingPage\PurchasingPageRequest.cshtml" />
-    <Content Include="Views\PurchasingPage\PurchasingPageCanvass.cshtml" />
-    <Content Include="Views\PurchasingPage\PurchasingPageQoutation.cshtml" />
     <Content Include="Views\Shared\_CustodianPage.cshtml" />
-    <Content Include="Views\CustodianPage\CustodianDashboard.cshtml" />
     <Content Include="Views\CustodianPage\CustodianPurchaseOrder.cshtml" />
-    <Content Include="Views\CustodianPage\CustodianInventory.cshtml" />
     <Content Include="Views\Shared\_RequestorPage.cshtml" />
-    <Content Include="Views\RequestorPage\RequestorDashboard.cshtml" />
     <Content Include="Views\RequestorPage\RequestorRequisition.cshtml" />
-    <Content Include="Views\RequestorPage\RequestorInventory.cshtml" />
     <Content Include="Views\PurchasingPage\PurchaseOrder.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchasingQoutationPage.cshtml" />
+    <Content Include="Views\AdminPage\RequestList.cshtml" />
+    <Content Include="Views\AdminPage\QuotationList.cshtml" />
+    <Content Include="Views\AdminPage\AdminQuotationList.cshtml" />
+    <Content Include="Views\AdminPage\Settings.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\PurchasingPage\PurchaseSettings.cshtml" />
+    <Content Include="Views\RequestorPage\RequestorSettings.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianSettings.cshtml" />
+    <Content Include="Views\Inventory\Edit.cshtml" />
+    <Content Include="Views\Inventory\Inv_Index.cshtml" />
+    <Content Include="Views\Inventory\ItemForm.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\productForm.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Supplier\AddSupplier.cshtml" />
+    <Content Include="Views\Supplier\DeleteSupplier.cshtml" />
+    <Content Include="Views\Supplier\SupplierMain.cshtml" />
+    <Content Include="Views\Supplier\UpdateSupplier.cshtml" />
+    <Content Include="Views\Supplier\UpdateSupplierForm.cshtml" />
+    <Content Include="Views\Shared\_SupplierPage.cshtml" />
+    <Content Include="Views\RequestorPage\UpdateRequisition.cshtml" />
+    <Content Include="Views\RequestorPage\UpdateRequisitionForm.cshtml" />
+    <Content Include="Views\RequestorPage\AddRequisition.cshtml" />
+    <Content Include="Views\RequestorPage\RequestorDashboard.cshtml" />
+    <Content Include="Views\RequestorPage\DeleteRequisition.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianDashboard.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianInventory.cshtml" />
+    <Content Include="Views\CustodianPage\CustodianQuotation.cshtml" />
+    <Content Include="Views\CustodianPage\View.cshtml" />
+    <Content Include="Views\Inventory\ALGORTIHM.cshtml" />
+    <Content Include="Views\Inventory\asdasdasd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,413 @@
+﻿:root {
+    --blue-color: #0c2f54;
+    --dark-color: #535b61;
+    --white-color: #fff;
+}
+.header {
+    position: fixed;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    background: #fff;
+}
+
+.main-container {
+    position: fixed;
+    top:10%;
+    margin-right: 100px; /* Set the right margin */
+    margin-left: 15px;
+    width: 92.5%;
+    background: #fff;
+    border-radius:5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.main-container-header {
+    border-bottom: solid 3px;
+    padding: 1rem 1rem;
+}
+.main-container-header h3{
+    display: flex;
+    justify-content: center;
+}
+
+.qoutation-header h2{
+    display: flex;
+    justify-content: center;
+}
+.qoutation-form {   
+    position: relative;
+    left: 4%;
+    display: inline-grid;
+    padding: 2rem 3rem;
+    background: lightblue;
+    height: 228px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    justify-content: center;
+    border-radius: 10px;
+    border: solid;
+}
+
+.qoutation-form button {
+    align-items: center;
+    border-radius: 10px;
+}
+ul {
+    list-style-type: none;
+}
+.po-details ul {
+    font-weight:bolder;
+}
+.invoice-wrapper {
+    overflow: auto;
+    display: none;
+    z-index: 1;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.table-container {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+}
+
+tbody {
+    text-align: center;
+    background: #f2f2f2;
+}
+
+td {
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+ul .ul-group {
+    list-style-type: none;
+}
+
+    ul .ul-group li {
+        margin: 2px 0;
+    }
+.text-dark {
+    color: var(--dark-color);
+}
+
+.text-blue {
+    color: var(--blue-color);
+}
+
+.text-end {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-start {
+    text-align: left;
+}
+
+.text-bold {
+    font-weight: 700;
+}
+/* hr line */
+.hr {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+/* border-bottom */
+.border-bottom {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--dark-color);
+    font-size: 14px;
+}
+    .invoice-wrapper.show {
+        position: absolute;
+        width: 100%;
+        top: 0;
+    }
+
+.invoice {
+    max-width: 850px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: var(--white-color);
+    padding: 70px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    min-height: 920px;
+}
+
+.invoice-head-top-left img {
+    width: 130px;
+}
+
+.invoice-head-top-right h3 {
+    font-weight: 500;
+    font-size: 27px;
+    color: var(--blue-color);
+}
+
+.invoice-head-middle, .invoice-head-bottom {
+    padding: 16px 0;
+}
+
+.invoice-body {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+    .invoice-body table {
+        border-collapse: collapse;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+        .invoice-body table td, .invoice-body table th {
+            padding: 12px;
+        }
+
+        .invoice-body table tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .invoice-body table thead {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+.invoice-body-info-item {
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+    .invoice-body-info-item .info-item-td {
+        padding: 12px;
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+.invoice-foot {
+    padding: 30px 0;
+}
+
+    .invoice-foot p {
+        font-size: 12px;
+    }
+
+.invoice-btns {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.invoice-btn {
+    padding: 3px 9px;
+    color: var(--dark-color);
+    font-family: inherit;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.invoice-head-top, .invoice-head-middle, .invoice-head-bottom {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding-bottom: 10px;
+}
+
+@media screen and (max-width: 992px) {
+    .invoice {
+        padding: 40px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .invoice-head-top, .invoice-head-middle, .invoice-head-bottom {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .invoice-head-bottom-right {
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+
+    .invoice * {
+        text-align: left;
+    }
+
+    .invoice {
+        padding: 28px;
+    }
+}
+
+.overflow-view {
+    max-height: 600px;
+    overflow-wrap: break-word;
+}
+
+.invoice-body {
+    min-width: 600px;
+    overflow-y: auto;
+}
+
+@media print {
+    .print-area {
+        visibility: visible;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+    }
+
+    .overflow-view {
+        overflow-x: auto;
+    }
+
+    .invoice-btns {
+        display: none;
+    }
+}
+
+button.invoice-btn:hover, button.invoice-btn:active {
+    color: black;
+    font-weight: bold;
+}
+.right-footer {
+    position: sticky;
+    right: 5%;
+    margin-top: 2px;
+    float: right;
+    width: 200px;
+    background: #f2f2f2;
+    border: solid 1px;
+}
+
+.invoice-btn.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Button styles */
+.dropbtn {
+    background-color: green;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.invoice-btn.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a.approve:hover {
+            background-color: green;
+        }
+
+        .dropdown-content a.submit:hover {
+            background-color: #2365b6;
+        }
+
+        .dropdown-content a.disapprove:hover {
+            background-color: #cf0000;
+        }
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
+
+span.sub{
+    color:blue;
+}
+span.dis{
+    color:red;
+}
+span.total{
+    color:green;
+}
+
+.exit {
+    top: 0;
+    position: relative;
+    z-index: 9999;
+    font-size: 35px;
+    float: right;
+}
+
+.hidden {
+    display: none;
+}
+
+#loadingIndicator {
+    position: fixed;
+    z-index:999999;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

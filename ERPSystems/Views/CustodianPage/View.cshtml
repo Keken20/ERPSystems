@@ -1,0 +1,139 @@
+﻿@model IPagedList<ERPSystem.Models.ViewModel>
+
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Custodian.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Style/TableDesign.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+    </style>
+</head>
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <div class="header-container">
+                <h1 style="margin: 0">INVENTORY</h1>
+                
+            <br /> <hr /> <br />
+
+            </div>
+
+            <div class="table-container">
+                <table class="responsive-table">
+                    <thead class="table-header">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().inv_InDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().prod_Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().prod_Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().inv_QOH)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().ProdUnit)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().ProdPriceUnit)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().ProdTotalPrice)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().isActive)
+                            </th>
+                            <th colspan="2">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-row">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.inv_InDate)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.prod_Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.prod_Name)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.inv_QOH)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.ProdUnit)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.ProdPriceUnit)
+                                </th>
+                                <th>
+                                    @Html.DisplayFor(modelItem => item.ProdTotalPrice)
+                                </th>
+                                <th>
+                                    @(item.isActive == 1 ? "Active" : "Inactive")
+                                </th>
+                                <td>
+                                    @if (item.isActive == 1)
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }, new { @class = "btn-edit" }) @:|
+}
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @{
+                    var alertMessage = TempData["AlertMessage"] as string;
+                    if (!string.IsNullOrEmpty(alertMessage))
+                    {
+                        <script>
+                            alert('@alertMessage');
+                        </script>
+                    }
+
+                    var successMessage = TempData["Success"] as string;
+                    if (!string.IsNullOrEmpty(successMessage))
+                    {
+                        <script>
+                            alert('@alertMessage');
+                        </script>
+                    }
+                }
+            </div>
+        </div>
+        @Html.PagedListPager(Model, pages => Url.Action("Cus_Index", "Inventory", new { pages, sortName = ViewBag.CurrentSort }),
+           new PagedListRenderOptions
+                {
+                    DisplayLinkToIndividualPages = true,
+                    LinkToFirstPageFormat = "First",
+                    LinkToPreviousPageFormat = "Prev",
+               LinkToNextPageFormat = "Next",
+                    LinkToLastPageFormat = "Last",
+                    MaximumPageNumbersToDisplay = 15
+                })
+    </div>
+</section>
+
+
+
+

@@ -1,0 +1,143 @@
+﻿@model ERPSystems.Models.Supplier
+
+@{
+    ViewBag.Title = "AddSupplier";
+    Layout = "~/Views/Shared/_SupplierPage.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <link href="~/Style/SupplierCSS.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                Add Supplier
+            </h3>
+
+            <br />
+            @using (Html.BeginForm("ProcessCreate", "Supplier", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SuppName, "Supplier Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SuppName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SuppName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SuppContact, "Supplier Contact", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.SuppContact, new { htmlAttributes = new { @class = "form-control", onkeydown = "preventSpaceInput(event)" } })
+                                @if (TempData["Msg"] != null)
+                                {
+                                    @TempData["Msg"]
+                                }
+                                @if (TempData["ValidationPhone"] != null)
+                                {
+                                    @TempData["ValidationPhone"]
+                                }
+                                @Html.ValidationMessageFor(model => model.SuppContact, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SuppCity, "Supplier City", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SuppCity, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SuppCity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SuppMunicipality, "Supplier Municipality", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SuppMunicipality, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SuppMunicipality, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SuppBarangay, "Supplier Barangay", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SuppBarangay, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.SuppBarangay, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SuppZipcode, "Supplier Zipcode", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.SuppZipcode, new { htmlAttributes = new { @class = "form-control" } })
+                            @if (TempData["ValidationZip"] != null)
+                            {
+                                @TempData["ValidationZip"]
+                            }
+                            @Html.ValidationMessageFor(model => model.SuppZipcode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
+            <br />
+            <div>
+                @Html.ActionLink("Get Back", "Supplier", "AdminPage")
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryval")
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        // Attach a function to the form's submit event
+        $("#supplier").submit(function () {
+            // Display a confirmation dialog
+            var userConfirmed = confirm("Are you sure you want to submit the form?");
+
+            // Return true to submit the form if the user clicked "OK"
+            // Return false to cancel the form submission if the user clicked "Cancel"
+            return userConfirmed;
+        });
+    });
+
+    function preventSpaceInput(event) {
+        if (event.keyCode === 32) {
+            event.preventDefault();
+        }
+    }
+</script>
+
+@{
+    var alertMessage = TempData["ShowAlert"] as string;
+    if (!string.IsNullOrEmpty(alertMessage))
+    {
+        <script>
+            alert('@alertMessage');
+        </script>
+    }
+}
+
+

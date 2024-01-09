@@ -1,0 +1,92 @@
+﻿@model ERPSystem.Models.InventoryModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_AdminPage.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Style/TableDesign.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            @using (Html.BeginForm("ProcessEdit", "Inventory"))
+            {
+                @Html.AntiForgeryToken()
+
+            <div class="f-horizontal">
+                <h1 style="text-align: center">UPDATE ITEM</h1>
+                <hr />
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.prod_Id, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.prod_Id, (SelectList)ViewBag.prod, "Select Product", new { @class = "f-control", @disabled="disable" })
+                        @Html.ValidationMessageFor(model => model.prod_Id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.inv_QOH, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.inv_QOH, new { htmlAttributes = new { @class = "f-control", @min = "0" } })
+                        @Html.ValidationMessageFor(model => model.inv_QOH, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProdUnit, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProdUnit, new { htmlAttributes = new { @class = "f-control" } })
+                        @Html.ValidationMessageFor(model => model.ProdUnit, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProdUnitPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ProdUnitPrice, new { htmlAttributes = new { @class = "f-control", @min = "0" } })
+                        @Html.ValidationMessageFor(model => model.ProdUnitPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <input type="hidden" name="prod_Id" value="@Model.prod_Id" />
+                <br />
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Update" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+            }
+        
+            @{
+                // Retrieve success or error messages from TempData
+                var successMessage = TempData["Success"] as string;
+                var errorMessage = TempData["Error"] as string;
+            }
+
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @errorMessage
+                </div>
+            }
+
+            <br />
+            <div class="r-content">
+                @Html.ActionLink("Back to List", "inv_index")
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,112 @@
+﻿@model IPagedList<ERPSystems.Models.Supplier>
+
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "DeleteSupplier";
+    Layout = "~/Views/Shared/_SupplierPage.cshtml";
+}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <link href="~/Style/SupplierCSS.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                Delete Supplier
+            </h3>
+            <br />
+            <div class="position">
+                @Html.PagedListPager(Model, page => Url.Action("DeleteSupplier", "Supplier", new { page, sortId = ViewBag.SortId }))
+            </div>
+            <br />
+            <div>
+                <table class="tbl">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Date Created</th>
+                            <th>Date Updated</th>
+                            <th>Status</th>
+                            <th colspan="2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if (Model != null)
+                            {
+                                foreach (var Data in Model)
+                                {
+
+                                    <tr>
+                                        <td>@Data.SuppID</td>
+                                        <td>@Data.SuppName</td>
+                                        <td>@Data.SuppContact</td>
+                                        <td>@Data.SuppCity, @Data.SuppMunicipality, @Data.SuppBarangay, @Data.SuppZipcode</td>
+                                        <td>@Data.SuppCreatedAt</td>
+                                        <td>@Data.SuppUpdatedAt</td>
+                                        <td>
+                                            @if (Data.SuppIsActive == 1)
+                                            {
+                                                <text>Active</text>
+                                            }
+                                            else
+                                            {
+                                                <text>Inactive</text>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (Data.SuppIsActive == 1)
+                                            {
+                                                <a href="@Url.Action("ProcessDelete", "Supplier", new { id = Data.SuppID })" class="btn btn-danger" title="Delete"><i class="fas fa-toggle-on"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="@Url.Action("ProcessReactivate", "Supplier", new { id = Data.SuppID })" class="btn btn-danger" title="Reactivate"><i class="fas fa-toggle-on"></i></a>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        <div>
+                            @if (TempData["Msg"] != null)
+                            {
+                                <div class="alert alert-success">
+                                    @TempData["Msg"]
+                                </div>
+                            }
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+            <br />
+            @Html.ActionLink("Get Back", "Supplier", "AdminPage")
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryval")
+</section>
+
+@{
+    var alertMessage = TempData["ShowAlert"] as string;
+    if (!string.IsNullOrEmpty(alertMessage))
+    {
+        <script>
+                    alert('@alertMessage');
+        </script>
+    }
+}
+
+

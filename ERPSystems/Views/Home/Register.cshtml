@@ -13,37 +13,27 @@
         @Html.AntiForgeryToken()
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserFname)
-            @Html.TextBoxFor(model => model.UserFname, new { @class = "form-control" })
+            @Html.LabelFor(model => model.AccFname)
+            @Html.TextBoxFor(model => model.AccFname, new { @class = "form-control" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserLname)
-            @Html.TextBoxFor(model => model.UserLname, new { @class = "form-control" })
+            @Html.LabelFor(model => model.AccLname)
+            @Html.TextBoxFor(model => model.AccLname, new { @class = "form-control" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserMname)
-            @Html.TextBoxFor(model => model.UserMname, new { @class = "form-control" })
+            @Html.LabelFor(model => model.AccMname)
+            @Html.TextBoxFor(model => model.AccMname, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AccUserName)
+            @Html.TextBoxFor(model => model.AccUserName, new { @class = "form-control" })
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.UserPhone)
-            @Html.TextBoxFor(model => model.UserPhone, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserEmail)
-            @Html.TextBoxFor(model => model.UserEmail, new { @class = "form-control" })
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName)
-            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserPassword)
-            @Html.PasswordFor(model => model.UserPassword, new { @class = "form-control" })
+            @Html.LabelFor(model => model.AccPassword)
+            @Html.PasswordFor(model => model.AccPassword, new { @class = "form-control" })
         </div>
         <!-- Add more fields as needed -->
 

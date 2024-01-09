@@ -227,18 +227,19 @@ body {
     overflow-y: auto;
 }
 
-@media print {
-    .print-area {
+@media print{
+    #print-area {
         visibility: visible;
         width: 100%;
         position: absolute;
         left: 0;
         top: 0;
         overflow: hidden;
+        background-color:black;
     }
 
     .overflow-view {
-        overflow-x: auto;
+        overflow-x: hidden;
     }
 
     .invoice-btns {

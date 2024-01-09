@@ -6,15 +6,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple User Login Form Flat Responsive widget Template :: w3layouts</title>
+
+    <title>Simple Acc Login Form Flat Responsive widget Template :: w3layouts</title>
     <!-- For-Mobile-Apps -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Simple User Login Form Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, SonyErricsson, Motorola Web Design" />
+    <meta name="keywords" content="Simple Acc Login Form Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, SonyErricsson, Motorola Web Design" />
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <!-- //For-Mobile-Apps -->
     <!-- Style -->
     <link href="~/Style/123.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -22,8 +25,8 @@
         <div class="contact-form">
             <div class="signin">
                 <form action="VerifyLogin" method="post">
-                    <input type="text" class="user" name="UserName" value="Enter Your Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Your Username';}" />
-                    <input type="password" class="pass" name="UserPassword" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" />
+                    <input type="text" class="user" name="AccUserName" value="Enter Your Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Enter Your Username';}" />
+                    <input type="password" class="pass" name="AccPassword" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" />
                     <input type="submit" value="Login" />
                     <div style="color:red"> `
                         <label>@ViewBag.Message</label>

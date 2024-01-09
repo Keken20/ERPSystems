@@ -51,7 +51,35 @@ $(document).ready(function () {
 
         
         // Show the modal
-        $('.invoice-wrapper.show').show();
-        
+        $('.invoice-wrapper.show').show();        
     });
+
+    $('.deletebtn').on('click', function () {
+        ReqId = $(this).data('req-id');
+        console.log(ReqId);
+        var confirmed = confirm("Are you sure you want to delete?");
+
+        // Check the user's choice
+        if (confirmed) {
+            $.ajax({
+                url: "/PurchasingPage/DeleteRequest", // Replace with your actual server-side endpoint
+                method: "POST", // or "GET" depending on your requirements
+                data: { reqId: ReqId }, // Data to send to the server
+                success: function (response) {
+                    // Handle the response from the server, e.g., update the UI
+                    alert(response.message)
+                    location.reload();
+                    window.location.href = window.location.href;
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        } else {
+            // If the user clicks Cancel, do nothing or provide alternative behavior
+            // For example, you can display a message or perform another action
+            alert("Deletion canceled.");
+        }
+    });
+
 });

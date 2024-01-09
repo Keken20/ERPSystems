@@ -1,5 +1,4 @@
-﻿
-var Aiken;
+﻿var Aiken;
 var ReqItems;
 var ReqId;
 var ProdId = [];
@@ -10,6 +9,7 @@ var tableData;
 var rowData;
 
 $(document).ready(function () {
+    // Show modal on view button click
     // Show modal on view button click
     $('.view').on('click', function () {
         ReqId = $(this).data('req-id');
@@ -25,11 +25,8 @@ $(document).ready(function () {
             data: { id: ReqId },
             success: function (response) {
                 // Handle the response from the server
-               
-
                 // Assign the response to the ReqItems variable
-               
-                ReqItems = response.requestItems;              
+                ReqItems = response.requestItems;
                 ReqItems.forEach(function (requestItemObject) {
                     // Create a new row
                     var row = $('<tr>');
@@ -54,12 +51,35 @@ $(document).ready(function () {
 
         // Other parts of your code can now access ReqItems
         // For example, you can use it outside the Ajax request
-      
-
 
         // Show the modal
         $('.invoice-wrapper.show').show();
 
+    });
+    $('.deletebtn').on('click', function () {
+        ReqId = $(this).data('req-id');
+        var confirmed = confirm("Are you sure you want to delete?");
+
+        // Check the user's choice
+        if (confirmed) {
+            $.ajax({
+                url: "/PurchasingPage/DeleteRequest", // Replace with your actual server-side endpoint
+                method: "POST", // or "GET" depending on your requirements
+                data: { reqId: ReqId }, // Data to send to the server
+                success: function (response) {
+                    // Handle the response from the server, e.g., update the UI
+                    alert(response.message)
+                    window.location.href = window.location.href;
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        } else {
+            // If the user clicks Cancel, do nothing or provide alternative behavior
+            // For example, you can display a message or perform another action
+            alert("Deletion canceled.");
+        }
     });
 
     $('#checkinventory').on('click', function () {
@@ -68,7 +88,7 @@ $(document).ready(function () {
         head = $('#dataTableHead tr');
         var allrow = $('#dataTableBody tr');
         var Onhand;
-        
+        console.log(ProdId);
         $.ajax({
             type: "POST",
             url: '/PurchasingPage/ReceivedProdId',
@@ -76,11 +96,12 @@ $(document).ready(function () {
             data: JSON.stringify({ id: ProdId }),
             success: function (result) {             
                 Onhand = result.inventory;
+                console.log(Onhand);
                 head.append($('<td class="text-bold">').text('On Hand'));
                 // Handle success             
              
                 allrow.each(function (index) {
-                    var onHandValue = Onhand[index].ProdQoh;
+                    var onHandValue = Onhand[index];
                     var quantityTable = Quantity[index];
                     var colorClass = '';
                     if (onHandValue > quantityTable) {
@@ -116,7 +137,8 @@ $(document).ready(function () {
             // Display a prompt message if the first button is not clicked
             alert("Please click the first button before clicking the second button.");
             return;
-        } else
+        }
+        else
         {
             var allrow = $('#dataTableBody tr');
             $.ajax({
@@ -156,7 +178,7 @@ $(document).ready(function () {
                                 var cellContent = $(this).find('input').length > 0 ? $(this).find('input').val() : $(this).text();
                                 rowData['column' + (j + 1)] = cellContent;
                             });
-
+                            
                             if (p + 1 === rowId) {
                                 tableData.push(rowData);                               
                             }                          
@@ -185,9 +207,7 @@ $(document).ready(function () {
                             }
                         });
                          console.log('RowData:', rowData);
-                        console.log('Table Data for Row ' + rowId + ':', tableData);
-                       
-
+                        console.log('Table Data for Row ' + rowId + ':', tableData);                      
                        ;
                         alert('Data added successfully for Row ' + rowId);
                     });
@@ -208,8 +228,25 @@ $(document).ready(function () {
             alert("Please click the first button before clicking the second button.");
             return;
         }
-        else {
-            alert("Successful 2");
+        else
+        {
+            console.log(ReqId);
+            $.ajax({
+                url: "/PurchasingPage/SendRequestoAdmin", // Replace with your actual server-side endpoint
+                method: "POST", // or "GET" depending on your requirements
+                data: { reqid: ReqId }, // Data to send to the server
+                success: function (response) {
+                    // Handle the response from the server, e.g., update the UI
+                    console.log(response);
+                    alert(response.message)
+                    location.reload();
+                    $('.invoice-wrapper.show').hide();
+                },
+                error: function (error) {
+                    console.error(error);
+                    alert(error);
+                }
+            });       
         }
 
     });
@@ -221,10 +258,29 @@ $(document).ready(function () {
             return;
         }
         else {
-            alert("Successful 3");
+            $.ajax({
+                url: "/PurchasingPage/DisapproveRequest", // Replace with your actual server-side endpoint
+                method: "POST", // or "GET" depending on your requirements
+                data: { reqid: ReqId }, // Data to send to the server
+                success: function (response) {
+                    // Handle the response from the server, e.g., update the UI
+                    console.log(response);
+                    alert(response.message)
+                    location.reload();
+                    window.location.href = window.location.href;
+                    $('.invoice-wrapper.show').hide();
+                },
+                error: function (error) {
+                    console.error(error);
+                    alert(error);
+                }
+            });
+
+         
         }
     });
 });
+
 
 $('#myTable').on('click', '.newButtonClass', function () {
     // 'this' refers to the clicked button

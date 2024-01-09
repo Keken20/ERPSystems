@@ -1,0 +1,45 @@
+﻿.home {
+    height: 100%;
+}
+.main--content {
+    display: flex;
+    justify-content: center;
+    text-align: start;
+    background-color: #fefefe;
+    padding: 1rem 3rem 7rem;
+    height: 100%;
+}
+form {
+    margin-top: 25px;
+    padding: 1rem 0rem;
+    font-size: larger;
+}
+.sidebar.close ~ .home {
+    left: 88px;
+    width: calc(100% -88px);
+    height: 100%;
+}
+label.control-label.col-md-2 {
+    font-weight: 400;
+}
+input {
+    height: 30px;
+    border-radius: 5px;
+    width: 200px;
+    font-size: large;
+    font-weight: 600;
+}
+input.btn.btn-default {
+    margin-top: 25px;
+    font-size: large;
+    font-weight: 700;
+    height: 40px;
+    font-size: large;
+    font-weight: 600;
+}
+input.btn.btn-default:hover{
+    background-color:cornflowerblue;
+}
+.text-danger {
+    color: red;
+}

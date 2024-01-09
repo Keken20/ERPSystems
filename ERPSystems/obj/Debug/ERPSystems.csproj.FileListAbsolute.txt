@@ -167,4 +167,8 @@ C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSy
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.CopyComplete
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.dll
 C:\Users\Aiken Canama\Source\Repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.pdb
+C:\Users\Aiken Canama\source\repos\Keken20\ERPSystems\ERPSystems\bin\PagedList.dll
+C:\Users\Aiken Canama\source\repos\Keken20\ERPSystems\ERPSystems\bin\PagedList.Mvc.dll
+C:\Users\Aiken Canama\source\repos\Keken20\ERPSystems\ERPSystems\bin\PagedList.xml
+C:\Users\Aiken Canama\source\repos\Keken20\ERPSystems\ERPSystems\bin\PagedList.Mvc.xml
 C:\Users\Aiken Canama\source\repos\Keken20\ERPSystems\ERPSystems\obj\Debug\ERPSystems.csproj.AssemblyReference.cache

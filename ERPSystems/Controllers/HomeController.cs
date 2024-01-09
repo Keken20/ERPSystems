@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using ERPSystems.Models;
 using System.Data.SqlClient;
+using System.Data;
 
 namespace ERPSystems.Controllers
 {
@@ -13,18 +14,19 @@ namespace ERPSystems.Controllers
         SqlCommand com = new SqlCommand();
         SqlConnection con = new SqlConnection();
         SqlDataReader dr;
+        int recordaffected;
         List<Account> userAccounts = new List<Account>();
         [HttpGet]
         private void connnectionString()
         {
             con.ConnectionString = ERPSystems.Properties.Resources.ConnectionString;
         }
+        
         public ActionResult Home()
         {
             return View();
         }
-
-        [HttpGet]
+      
         public ActionResult Login()
         {
             return View();
@@ -32,39 +34,49 @@ namespace ERPSystems.Controllers
         [HttpPost]
         public ActionResult VerifyLogin(Account account)
         {
-            connnectionString();
-            con.Open();
-            com.Connection = con;
-            com.CommandText = "select * from Useraccount where UseraccountUserName = '" + account.UserName + "' and UseraccountPassword = '" + account.UserPassword + "'";
-            dr = com.ExecuteReader();
-            if (dr.Read())
+            try
             {
-                string type = dr["UseraccountType"].ToString();
-                if (type == "Admin")
+                connnectionString();
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "select * from Account where AccUserName = @Username and AccPassword = @Password and AccIsActive = 1";
+                com.Parameters.AddWithValue("@Username", account.AccUserName);
+                com.Parameters.AddWithValue("@Password", account.AccPassword);
+                dr = com.ExecuteReader();
+                if (dr.Read())
                 {
-                    return RedirectToAction("AdminDashboard", "AdminPage");
+                    string type = dr["AccType"].ToString();
+                    Session["userId"] = dr["AccId"].ToString();
+                    Session["userName"] = dr["AccUserName"].ToString();
+                    if (type == "Admin")
+                    {
+                        return RedirectToAction("AdminDashboard", "AdminPage");
+                    }
+                    else if (type == "Purchaser")
+                    {
+                        return RedirectToAction("PurchasingPageRequest", "PurchasingPage");
+                    }
+                    else if (type == "Requestor")
+                    {
+                        return RedirectToAction("RequestorRequisition", "RequestorPage");
+                    }
+                    else if (type == "Custodian")
+                    {
+                        return RedirectToAction("CustodianPurchaseOrder", "CustodianPage");
+                    }
+                    else
+                    {
+                        return RedirectToAction("VerifyUser", "Home");
+                    }
                 }
-                else if(type == "Purchaser")
-                {
-                    return RedirectToAction("PurchasingDashboard", "PurchasingPage");
-                }
-            
-                //else if (type == "Custodian")
-                //{
-                //    return RedirectToAction("", "AdminPage");
-                //}
-            
-
-                else
-                {
-                    return RedirectToAction("VerifyUser", "Home");
-                }                
-            }
-            else
-            {
                 ViewBag.Message = "Invalid Account";
                 return View("Login");
             }
+            catch(Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View("Login");
+            }        
         }
      
         [HttpGet]
@@ -82,16 +94,19 @@ namespace ERPSystems.Controllers
                     connnectionString();
                     con.Open();
                     com.Connection = con;
-                    com.CommandText = "insert into Useraccount(UseraccountFname,UseraccountLname,UseraccountMname,UseraccountPhone,UseraccountEmail,UseraccountUserName,UseraccountPassword)values(@UseraccountFname,@UseraccountLname,@UseraccountMname,@UseraccountPhone,@UseraccountEmail,@UseraccountUserName,@UseraccountPassword)";
-                    com.Parameters.AddWithValue("@UseraccountFname", acc.UserFname);
-                    com.Parameters.AddWithValue("@UseraccountLname", acc.UserLname);
-                    com.Parameters.AddWithValue("@UseraccountMname", acc.UserMname);
-                    com.Parameters.AddWithValue("@UseraccountPhone", acc.UserPhone);
-                    com.Parameters.AddWithValue("@UseraccountEmail", acc.UserEmail);
-                    com.Parameters.AddWithValue("@UseraccountUserName", acc.UserName);
-                    com.Parameters.AddWithValue("@UseraccountPassword", acc.UserPassword);
-                    com.ExecuteNonQuery();
-                    ViewBag.Message = "Registration successful!";
+                    com.CommandText = "insert into Account(AccFname,AccLname,AccMname,AccUserName,AccPassword)values(@UseraccountFname,@UseraccountLname,@UseraccountMname,@UseraccountUserName,@UseraccountPassword)";
+                    com.Parameters.AddWithValue("@UseraccountFname", acc.AccFname);
+                    com.Parameters.AddWithValue("@UseraccountLname", acc.AccLname);
+                    com.Parameters.AddWithValue("@UseraccountMname", acc.AccMname);        
+                    com.Parameters.AddWithValue("@UseraccountUserName", acc.AccUserName);
+                    com.Parameters.AddWithValue("@UseraccountPassword", acc.AccPassword);
+                    recordaffected = com.ExecuteNonQuery();
+                    if(recordaffected > 0)
+                    {
+                        ViewBag.Message = "Registration successful!";
+                        return View();
+                    }
+                    ViewBag.Message = "Invalid account!";
                     return View();
                 }
                 catch (Exception e)
@@ -99,8 +114,21 @@ namespace ERPSystems.Controllers
                     ViewBag.Message = e.Message;
                     return View();
                 }
+                finally
+                {
+                    // Ensure the connection is closed, even if an exception occurs
+                    if (con.State == ConnectionState.Open)
+                    {
+                        con.Close();
+                    }
+                }
             }
-            return View();
+            else
+            {
+                ViewBag.Message = "Invalid account!";
+                return View();
+            }
+           
         }
        
         public ActionResult VerifyUser()

@@ -1,0 +1,201 @@
+﻿﻿@model IPagedList<ERPSystem.Models.ViewModel.ProductViewModel>
+
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminPage.cshtml";
+}
+
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Style/TableDesign.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <div class="header-container">
+                <h1 style="margin: 0">PRODUCTS</h1>
+                @Html.ActionLink("ADD PRODUCT", "productCreate", null, new { @class = "my-link-btn" })
+            </div>
+            <br /> <hr /> <br />
+
+            <div class="my-form-container">
+                @using (Html.BeginForm("Index", "Product"))
+                {
+                    <div class="my-form-group">
+                        <label for="sortName">Sort By:</label>
+                        <select id="sortName" name="sortName" class="my-form-control">
+                            <option value="NONE">Select Column</option>
+                            <option value="PRODID">Product ID</option>
+                            <option value="ProdName">Product Name</option>
+                            <option value="ProdcategoryName">Category</option>
+                            <option value="ProdCreatedAT">Date Created</option>
+                            <option value="SupplierId">Supplier</option>
+                            <option value="ProdIsActive">Deactivated</option>
+                        </select>
+                        <input type="submit" value="Sort" class="my-btn" />
+                    </div>
+                }
+
+                @using (Html.BeginForm("Search", "Product"))
+                {
+                    <div class="my-form-group">
+                        <label for="searchPhrase">Search ID</label>
+                        <input type="text" name="searchPhrase" id="searchPhrase" class="my-form-control" />
+                        <input type="submit" value="Search" class="my-btn" />
+                    </div>
+                }
+            </div>
+            <div class="table-container">
+                <table class="responsive-table">
+                    <thead class="table-header">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().prod_Id)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().prod_Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().prod_Description)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().CategoryName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().SuppName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().inDate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().isActive)
+                            </th>
+                            <th colspan="2">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-row">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.prod_Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.prod_Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.prod_Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SuppName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.inDate)
+                                </td>
+                                <td>
+                                    @(item.isActive == 1 ? "Active" : "Inactive")
+                                </td>
+                                <td>
+                                    @if (item.isActive == 1)
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }, new { @class = "btn-edit" }) @:|
+
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.prod_Id }, new { @class = "btn-delete", data_pur_id = item.prod_Id });
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Reactivate", "Reactivate", new { id = item.prod_Id, sortName = ViewBag.CurrentProductSort }, new { @class = "btn-reactivate" })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @Html.PagedListPager(Model, pages => Url.Action("Index", "Product", new { pages, sortName = ViewBag.CurrentProductSort }),
+               new PagedListRenderOptions
+                    {
+                        DisplayLinkToIndividualPages = true,
+                        LinkToFirstPageFormat = "First",
+                        LinkToPreviousPageFormat = "Prev",
+                   LinkToNextPageFormat = "Next",
+                        LinkToLastPageFormat = "Last",
+                        MaximumPageNumbersToDisplay = 15
+                    })
+        </div>
+    </div>
+</section>
+
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+    if (!string.IsNullOrEmpty(alertMessage))
+    {
+        <script>
+             alert('@alertMessage');
+        </script>
+    }
+
+    var successMessage = TempData["Success"] as string;
+    if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success" role="alert">
+            @successMessage
+        </div>
+    }
+
+    if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <script>
+            alert('@ViewBag.ErrorMessage');
+        </script>
+    }
+}
+
+<script>
+    // Wrap your script in $(document).ready() to ensure it runs after the DOM is fully loaded
+    $(document).ready(function () {
+        $('.btn-delete').on('click', function (e) {
+            e.preventDefault();
+
+            var purId = $(this).data('pur-id');
+            var confirmed = confirm("Are you sure you want to delete?");
+
+            // Check the user's choice
+            if (confirmed) {
+                $.ajax({
+                    url: "/Inventory/Delete", // Replace with your actual server-side endpoint
+                    method: "POST", // or "GET" depending on your requirements
+                    data: { purId: purId }, // Data to send to the server
+                    success: function (response) {
+                        // Handle the response from the server, e.g., update the UI
+                        alert(response.message);
+                        window.location.href = window.location.href; // Refresh the page
+                    },
+                    error: function (error) {
+                        alert("Error: " + error.statusText);
+                    }
+                });
+            } else {
+                // If the user clicks Cancel, do nothing or provide alternative behavior
+                // For example, you can display a message or perform another action
+                alert("Deletion canceled.");
+            }
+        });
+    });
+</script>

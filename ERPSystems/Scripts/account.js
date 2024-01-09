@@ -10,16 +10,25 @@ $(document).ready(function () {
         var userName = $(this).data('user-name');
         var userPassword = $(this).data('user-password');
         var userType = $(this).data('user-type');
+        var userStatus = $(this).data('acc-status');
+
+        // Toggle the display of activate and deactivate buttons
+        $('#activatebtn').toggle(userStatus !== 'Active');
+        $('#deactbtn').toggle(userStatus === 'Active');
 
         // Populate the form fields
-        $('#userId').val(userId);
-        $('#userFullName').val(userFullName);
-        $('#userName').val(userName);
-        $('#userPassword').val(userPassword);
-        $('#userType').val(userType);
+        $('#AccId').val(userId);
+        $('#AccFullName').val(userFullName);
+        $('#AccUserName').val(userName);
+        $('#AccPassword').val(userPassword);
+        $('#AccType').val(userType);
+        $('#AccStatus').val(userStatus);
 
         // Show the modal
         $('.modal').show();
+    });
+    $('.back').on('click', function () {
+        closeModal();
     });
 });
 

@@ -1,0 +1,129 @@
+﻿@model IPagedList<ERPSystem.Models.CategoryModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminPage.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <link href="~/Style/TableDesign.css" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+
+</head>
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <div class="header-container">
+                <h1 style="margin: 0">CATEGORY</h1>
+                <p>
+                    @Html.ActionLink("CREATE NEW", "Create", null, new { @class = "my-link-btn" })
+                </p>
+            </div>
+            <br /> <hr /> <br />
+            <div class="my-form-container">
+                @using (Html.BeginForm("Index", "Category", FormMethod.Get))
+                {
+                    <div class="form-group">
+                        <label for="sortName">Sort By:</label>
+                        <select id="sortName" name="sortName" class="my-form-control">
+                            <option value="NONE">Active</option>
+                            <option value="IsActive">InActive</option>
+                        </select>
+                        <input type="submit" value="Show" class="my-btn" />
+                    </div>
+                }
+            </div>
+            <div class="table-container">
+                <table class="responsive-table">
+                    <thead class="table-header">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().categID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().CategoryName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().categ_IsActive)
+                            </th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-row">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.categID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CategoryName)
+                                </td>
+                                <th>
+                                    @(item.categ_IsActive == 1 ? "Active" : "Inactive")
+                                </th>
+                                <td>
+                                    @if (item.categ_IsActive == 1)
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.categID }, new { @class = "btn-edit" }) @:|
+
+                                        @Html.ActionLink("Delete", "Delete", new { id = item.categID }, new { @class = "btn-delete" });
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink("Reactivate", "categReactivate", new { id = item.categID, pages = ViewBag.Pages, sortName = ViewBag.CurrentSort }, new { @class = "btn-reactivate" })
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, pages => Url.Action("Index", "Category", new { pages, sortName = ViewBag.CurrentSort }),
+           new PagedListRenderOptions
+                {
+                    DisplayLinkToIndividualPages = true,
+                    LinkToFirstPageFormat = "First",
+                    LinkToPreviousPageFormat = "Prev",
+               LinkToNextPageFormat = "Next",
+                    LinkToLastPageFormat = "Last",
+                    MaximumPageNumbersToDisplay = 15
+                })
+            </div>
+        </div>
+    </div>
+</section>
+
+@{
+    var alertMessage = TempData["AlertMessage"] as string;
+    if (!string.IsNullOrEmpty(alertMessage))
+    {
+        <script>
+            alert('@alertMessage');
+        </script>
+    }
+
+    var successMessage = TempData["Success"] as string;
+    if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success" role="alert">
+            @successMessage
+        </div>
+    }
+
+    if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <script>
+            alert('@ViewBag.ErrorMessage');
+        </script>
+    }
+}

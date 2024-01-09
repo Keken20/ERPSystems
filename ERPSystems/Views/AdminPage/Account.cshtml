@@ -6,6 +6,25 @@
           ,"userName"
           ,"userPassword"};
 }
+
+
+@{
+    var updateMessage = TempData["Update"] as string;
+    if (!string.IsNullOrEmpty(updateMessage))
+    {
+        <script>
+            alert('@updateMessage');
+        </script>
+    }
+
+    var deactivateMessage = TempData["Status"] as string;
+    if (!string.IsNullOrEmpty(deactivateMessage))
+    {
+        <script>
+            alert('@deactivateMessage');
+        </script>
+    }
+}
 <head>
     <link href="~/Style/account.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
@@ -15,8 +34,7 @@
     <div class="main--content">
         <div class="tabular--wrapper">
             <h3 class="table-title">
-                User Account
-
+                Acc Account
             </h3>
             <div class="table-container">
                 <table>
@@ -24,7 +42,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Username</th>
+                            <th>Accname</th>
                             <th>Password</th>
                             <th>Action</th>
                         </tr>
@@ -36,50 +54,80 @@
                                 foreach (var Data in Model)
                                 {
                                     <tr>
-                                        <td>@Data.UserID</td>
+                                        <td>@Data.AccId</td>
                                         <td>@Data.UserFullName</td>
-                                        <td>@Data.UserName</td>
-                                        <td>@Data.UserPassword</td>
+                                        <td>@Data.AccUserName</td>
+                                        <td>@Data.AccPassword</td>
                                         <td>
-                                            <button class="view" data-user-id="@Data.UserID" data-user-fullname="@Data.UserFullName" data-user-name="@Data.UserName" data-user-password="@Data.UserPassword"
-                                                    data-user-type="@Data.UserType">
+                                            <button class="view" data-user-id="@Data.AccId" data-user-fullname="@Data.UserFullName" data-user-name="@Data.AccUserName" data-user-password="@Data.AccPassword" data-user-type="@Data.AccType" data-acc-status="@(Data.AccStatus==1?"Active":"Inactive")">
                                                 <i class='bx bx-edit-alt'></i>
                                             </button>
                                             <button><i class='bx bx-trash'></i></button>
                                         </td>
-
                                     </tr>
                                 }
                             }
                         }
                     </tbody>
                 </table>
-
             </div>
-
         </div>
-
     </div>
     <div id="crud-modal" class="modal show">
         <div class="modal-content">
-            <button class="closed" onclick="closeModal()">&times;</button>
-            <h2>Edit User</h2>
-            <form id="update-form" action="Account" method="post">
-                <input type="hidden" id="userId" name="userId" />
-                <label for="userName">Fullname:</label>
-                <input type="text" readonly id="userFullName" name="userFullName" />
-                <label for="userName">Username:</label>
-                <input type="text" readonly id="userName" name="userName" />
-                <label for="userPassword">Password:</label>
-                <input type="text" readonly id="userPassword" name="userPassword" />
-                <label for="userPassword">User Type:</label>
-                <input type="text" id="userType" name="userType" />
-                <div class="submitbtn">
-                    <button type="submit">Update</button>
-                </div>
-            </form>
+            <h2>Account Details</h2>
+            <div class="back-btn">
+                <button id="back" class="back"><i class='bx bxs-left-arrow'></i></button>
+            </div>           
+            <div>
+                <form id="update-form" action="Account" method="post">
+                    <input type="hidden" id="AccId" name="AccId" />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" readonly id="AccFullName" name="AccFullName" />
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select id="AccType" name="AccType">
+                            <option value="Admin">Admin</option>
+                            <option value="Requestor">Requestor</option>
+                            <option value="Purchaser">Purchaser</option>
+                            <option value="Custodian">Custodian</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <input type="text"  readonly id="AccStatus" />
+                    </div>
+                    <div class="btn">
+                        <button type="submit" name="submitbutton" value="updateBtn">Update</button>
+                        <button id="activatebtn" type="submit" name="submitbutton" value="activeBtn">Activate</button>
+                        <button id="deactbtn" type="submit" name="submitbutton" value="deactBtn">Deactivate</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+    @*<div id="crud-modal" class="modal show">
+            <div class="modal-content">
+                <button class="closed" onclick="closeModal()">&times;</button>
+                <h2>Edit Acc</h2>
+                <form id="update-form" action="Account" method="post">
+                    <input type="hidden" id="AccId" name="AccId" />
+                    <label for="FullName">Fullname:</label>
+                    <input type="text" readonly id="AccFullName" name="AccFullName" />
+                    <label for="userName">Accname:</label>
+                    <input type="text" readonly id="AccUserName" name="AccName" />
+                    <label for="AccPassword">Password:</label>
+                    <input type="text" readonly id="AccPassword" name="AccPassword" />
+                    <label for="AccPassword">Acc Type:</label>
+                    <input type="text" id="AccType" name="AccType" />
+                    <div class="submitbtn">
+                        <button type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>*@
     <script src="~/Scripts/account.js"></script>
 </section>
 

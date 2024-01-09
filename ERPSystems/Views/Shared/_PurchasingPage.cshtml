@@ -19,9 +19,8 @@
         <header>
             <div class="image-text">
                 <span class="image">
-                    <img src="" alt="logo">
+                    <img src="https://static-00.iconduck.com/assets.00/mobile-wallet-icon-2048x2048-r1ma8olm.png" alt="logo">
                 </span>
-
                 <div class="text header-text">
                     <span class="name">ERP</span>
                     <span class="profession">System</span>
@@ -32,12 +31,6 @@
         <div class="menu-bar">
             <div class="menu">
                 <ul class="menu-links">
-                    <li class="nav-link">
-                        <a href="@Url.Action("PurchasingDashboard","PurchasingPage")">
-                            <i class='bx bx-home-alt icon'></i>
-                            <span class="text nav-text">Dashboard</span>
-                        </a>
-                    </li>
                     <li class="nav-link">
                         <a href="@Url.Action("PurchasingPageRequest","PurchasingPage")">
                             <i class='bx bx-user icon'></i>
@@ -51,26 +44,22 @@
                         </a>
                     </li>
                     <li class="nav-link">
-                        <a href="@Url.Action("PurchasingPageCanvass","PurchasingPage")">
-                            <i class='bx bx-purchase-tag-alt icon'></i>
-                            <span class="text nav-text">Canvass</span>
-                        </a>
-                    </li>
-                    <li class="nav-link">
-                        <a href="@Url.Action("PurchasingPageQoutation","PurchasingPage")">
-                            <i class='bx bx-data icon'></i>
-                            <span class="text nav-text">Qoutation</span>
+                        <a href="@Url.Action("PurchaseSettings","PurchasingPage")">
+                            <i class='bx bx-cog icon'></i>
+                            <span class="text nav-text">Settings</span>
                         </a>
                     </li>
                 </ul>
             </div>
             <div class="bottom-content">
-                <li class="@Url.Action("Home","Home")">
-                    <a href="">
-                        <i class='bx bx-log-out icon'></i>
-                        <span class="text nav-text">Logout</span>
-                    </a>
-                </li>
+                <ul>
+                    <li class="">
+                        <a href="@Url.Action("Home","Home")">
+                            <i class='bx bx-log-out icon'></i>
+                            <span class="text nav-text">Logout</span>
+                        </a>
+                    </li>
+                </ul>                         
             </div>
         </div>
     </nav>

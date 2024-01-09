@@ -1,0 +1,148 @@
+﻿@model IPagedList<ERPSystems.Models.Supplier>
+
+@using PagedList;
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "SupplierMain";
+    Layout = "~/Views/Shared/_SupplierPage.cshtml";
+}
+@*<h1 style="margin-left: 10%">Supplier</h1>*@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+    <link href="~/Style/request.css" rel="stylesheet" />
+    <link href="~/Style/SupplierCSS.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+
+<section class="home">
+    <div class="main--content">
+        <div class="tabular--wrapper">
+            <h3 class="table-title">
+                Supplier
+            </h3>
+            <br />
+            <br />
+            <div class="functionbut">
+                @Html.ActionLink("Add Supplier", "AddSupplier", "Supplier")
+                @Html.ActionLink("Update Supplier", "UpdateSupplier", "Supplier")
+                @Html.ActionLink("Delete Supplier", "DeleteSupplier", "Supplier")
+            </div>
+            <br />
+            <br />
+            @using (Html.BeginForm("ProcessSearch", "AdminPage"))
+            {
+                @Html.AntiForgeryToken()
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="searchId">Search for Supplier</label>
+                        <input type="text" name="searchId" id="searchId" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </div>
+                </div>
+
+                <div>
+                    @if (TempData["Msg"] != null)
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Msg"]
+                        </div>
+                    }
+                </div>
+            }
+            <br />
+            <br />
+
+            @using (Html.BeginForm("Supplier", "AdminPage"))
+            {
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="sortId">Sort By:</label>
+                        <select id="sortId" name="sortId" class="form-control">
+                            <option value="">Select</option>
+                            <option value="SuppName">Name</option>
+                            <option value="SuppPhone">Contact</option>
+                            <option value="SuppCity">City</option>
+                            <option value="SuppMunicipality">Municipality</option>
+                            <option value="SuppBarangay">Barangay</option>
+                            <option value="SuppZipcode">Zipcode</option>
+                            <option value="SuppCreatedAt">CreatedAt</option>
+                            <option value="SuppUpdatedAt">UpdatedAt</option>
+                        </select>
+
+                        @*<label for="sortType">Sort Order:</label>
+                            <select id="sortType" name="sortType" class="form-control">
+                                <option value="ASC">ASCENDING</option>
+                                <option value="DESC">DESCENDING</option>
+                            </select>*@
+                        <br>
+
+                        <input type="submit" value="Sort" class="btn btn-default" />
+                    </div>
+                </div>
+            }
+
+            <br />
+
+            <div class="pagination">
+                @Html.PagedListPager(Model, page => Url.Action("Supplier", "AdminPage", new { page, sortId = ViewBag.SortId }))
+            </div>
+
+            <div class="table-container">
+                <div>
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppID)</th>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppName)</th>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppContact)</th>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppCity)</th>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppCreatedAt)</th>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppUpdatedAt)</th>
+                                <th>@Html.DisplayNameFor(model => Model.First().SuppIsActive)</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    foreach (var Data in Model)
+                                    {
+                                        <tr>
+                                            <td>@Data.SuppID</td>
+                                            <td>@Data.SuppName</td>
+                                            <td>@Data.SuppContact</td>
+                                            <td>@Data.SuppCity, @Data.SuppMunicipality, @Data.SuppBarangay, @Data.SuppZipcode</td>
+                                            <td>@Data.SuppCreatedAt</td>
+                                            <td>@Data.SuppUpdatedAt</td>
+                                            <td>@Data.SuppIsActive</td>
+                                            <td>@Html.ActionLink("Delete", "ProcessDelete", "Supplier", new { id = Data.SuppID })</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
+

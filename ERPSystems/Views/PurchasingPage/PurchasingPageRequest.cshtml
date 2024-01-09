@@ -9,10 +9,9 @@
 
     <link href="~/Style/requestpage.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/jquery-ui-1.13.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 </head>
 <section class="home">
     <div class="main--content">
@@ -48,7 +47,7 @@
                                             <button class="view" data-req-id="@i.RequestId" data-req-name="@i.RequestorName" data-req-date="@i.RequestDate">
                                                 <i class='bx bx-edit-alt'></i>
                                             </button>
-                                            <button><i class='bx bx-trash'></i></button>
+                                            <button class="deletebtn" data-req-id="@i.RequestId"><i class='bx bx-trash'></i></button>
                                         </td> 
                                     </tr>
                                 }

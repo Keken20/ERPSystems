@@ -7,8 +7,6 @@ $(document).ready(function () {
         var tableBody = $('#dataTableBody');
         PurId = $(this).data('pur-id');
         console.log("PurId:",PurId)
-        //var ReqName = $(this).data('req-name');
-        //var ReqDate = $(this).data('req-date');
 
         $('#purid').val(PurId);
     

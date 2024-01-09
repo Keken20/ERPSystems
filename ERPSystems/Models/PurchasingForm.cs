@@ -17,5 +17,7 @@ namespace ERPSystems.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime PurCreated { get; set; }
         public string RequestFrom { get; set; }
+
+        public int QuoteCount { get; set; }
     }
 }
