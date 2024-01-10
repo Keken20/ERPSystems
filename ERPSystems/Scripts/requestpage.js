@@ -94,29 +94,37 @@ $(document).ready(function () {
             url: '/PurchasingPage/ReceivedProdId',
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify({ id: ProdId }),
-            success: function (result) {             
+            success: function (result) {
                 Onhand = result.inventory;
                 console.log(Onhand);
                 head.append($('<td class="text-bold">').text('On Hand'));
-                // Handle success             
-             
+                // Handle success                          
                 allrow.each(function (index) {
-                    var onHandValue = Onhand[index];
+                    var onHandValue = Onhand[index].ProdQoh;
+                    console.log(onHandValue);
                     var quantityTable = Quantity[index];
                     var colorClass = '';
-                    if (onHandValue > quantityTable) {
-                        colorClass = 'text-green';  // Change to a CSS class for green text
-                    } else if (onHandValue < quantityTable) {
-                        colorClass = 'text-red';    // Change to a CSS class for red text
+                    if (onHandValue != null) {
+                        if (onHandValue > quantityTable) {
+                            colorClass = 'text-green';  // Change to a CSS class for green text
+                        } else if (onHandValue < quantityTable) {
+                            colorClass = 'text-red';    // Change to a CSS class for red text
+                        }
+                        else {
+                            colorClass = 'text-blue';    // Change to a CSS class for red text
+                        }
+                        $(this).append($('<td>').text(onHandValue).addClass(colorClass));
                     }
                     else {
-                        colorClass = 'text-blue';    // Change to a CSS class for red text
+                        onHandValue = 0;
+                        $(this).append($('<td>').text(onHandValue).addClass(colorClass));
                     }
-                    $(this).append($('<td>').text(onHandValue).addClass(colorClass));
+                    
                 });
             },
             error: function (error) {
-                
+                console.log(error);
+                alert(error);
                 
             }         
         });       
@@ -182,8 +190,10 @@ $(document).ready(function () {
                             if (p + 1 === rowId) {
                                 tableData.push(rowData);                               
                             }                          
-                        });                      
+                        });
+
                         var jsonData = JSON.stringify({ tableData: tableData, reqid: ReqId });
+                       
                         console.log('Data', jsonData);
                         $.ajax({
                             type: 'POST',

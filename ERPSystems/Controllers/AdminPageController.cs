@@ -476,8 +476,8 @@ namespace ERPSystems.Controllers
                                 com.CommandText = "insert into PurchaseOrderItem(PurId,ProdId,PurQuantity,PurUnit)values(@purid,@prdid,@purquantity,@purunit)";
                                 com.Parameters.AddWithValue("@purid", purid);
                                 com.Parameters.AddWithValue("@prdid", row.column1);
-                                com.Parameters.AddWithValue("@purquantity", row.column4);
-                                com.Parameters.AddWithValue("@purunit", row.column7);
+                                com.Parameters.AddWithValue("@purquantity", row.column7);
+                                com.Parameters.AddWithValue("@purunit", row.column4);
                                 recordAffected = com.ExecuteNonQuery();
                                 if (recordAffected <= 0)
                                 {

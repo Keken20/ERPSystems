@@ -90,14 +90,12 @@ namespace ERPSystems.Controllers
             }
             return View(requestForm);
         }
-        [HttpPost]
+       
         public List<Inventory> FetchProdIdInventory(int[] id)
         {
-            RequestModel model = new RequestModel();
             connnectionString();
             try
             {
-                Response.Write(id);
                 con.Open();
                 com.Connection = con;
                 string parameterizedIds = string.Join(",", id.Select((_, index) => $"@prodid{index}"));
@@ -112,23 +110,29 @@ namespace ERPSystems.Controllers
                 {
                     inventory.Add(new Inventory
                     {
-                        ProdQoh = int.Parse(dr["ProdQOH"].ToString())
+                        ProdQoh = int.Parse(dr["totalStock"].ToString())
                     });
                 }
+                return (inventory);
             }
-            catch
+            catch (Exception ex)
             {
-
+                throw ex;
             }
-            return (inventory);
+            finally
+            {
+                // Ensure the connection is closed, even if an exception occurs
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }           
         }
         public ActionResult ReceivedProdId(int[] id)
         {
             List<Inventory> inv = FetchProdIdInventory(id);
             RequestModel model = new RequestModel();
-            {
-                model.inventory = inv;
-            };
+            model.inventory = inv;
             return Json(model);
         }
         public ActionResult ReceivedRequestItem(int id)
@@ -415,13 +419,14 @@ namespace ERPSystems.Controllers
                     com.CommandText = "insert into PurchaseOrderItem(PurId,ProdId,PurQuantity,PurUnit)values(@purid,@prodid,@purquantity,@purunit)";
                     foreach (var row in tableData)
                     {
+
                         com.Parameters.Clear();
-                        Console.WriteLine($"ProdId: {row.column1}, PurQuantity: {row.column7}, PurUnit: {row.column4}");
+                        Console.WriteLine($"ProdId: {row.column1}, PurQuantity: {row.column6}, PurUnit: {row.column4}");
                         // ... rest of the loop
                         prodid = int.Parse(row.column1);
                         com.Parameters.AddWithValue("@purid", purid);
                         com.Parameters.AddWithValue("@prodid", row.column1);
-                        com.Parameters.AddWithValue("@purquantity", row.column7);
+                        com.Parameters.AddWithValue("@purquantity", row.column6);
                         com.Parameters.AddWithValue("@purunit", row.column4);
                         recordAffected = com.ExecuteNonQuery();
                         if (recordAffected <= 0)
@@ -485,7 +490,9 @@ namespace ERPSystems.Controllers
                     {
                         QuoteId = int.Parse(dr["QouteId"].ToString()),
                         PurId = int.Parse(dr["PurId"].ToString()),
-                        QuoteCreated = DateTime.Parse(dr["QouteCreatedAt"].ToString()),
+                        QuoteCreated = dr["QouteCreatedAt"] is DBNull
+                        ? DateTime.Now
+                        : DateTime.Parse(dr["QouteCreatedAt"].ToString()),
                         QuoteSubTotal = double.Parse(dr["QouteSubtotal"].ToString()),
                         QuoteDiscount = double.Parse(dr["QouteDiscount"].ToString()),
                         QuoteTotal = double.Parse(dr["QouteTotal"].ToString()),

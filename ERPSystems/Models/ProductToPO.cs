@@ -10,7 +10,8 @@ namespace ERPSystems.Models
         public int ReqId { get; set; }
         public string column1 { get; set; }
         public string column4 { get; set; }
-        public string column7 { get; set; }
 
+        public string column7 { get; set; }
+        public string column6 { get; set; }
     }
 }
