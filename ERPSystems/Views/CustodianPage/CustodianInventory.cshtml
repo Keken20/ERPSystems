@@ -1,8 +1,8 @@
-﻿@model IPagedList<ERPSystem.Models.ViewModel>
+﻿@model IEnumerable<ERPSystem.Models.ViewModel>
 
 
 @{
-    ViewBag.Title = "Inv_Index";
+    ViewBag.Title = "CustodianInventory";
     Layout = "~/Views/Shared/_CustodianPage.cshtml";
 }
 
@@ -27,60 +27,9 @@
             <div class="header-container">
                 <h1 style="margin: 0">INVENTORY</h1>
                 <div class="menu-container">
-                    <a href="@Url.Action("Create", "Category")" class="menu-item">
-                        <i class='bx bx-category-alt'></i>
-                        <span>CATEGORY ENTRY</span>
-                    </a>
-
-                    <a href="@Url.Action("productCreate", "Product")" class="menu-item">
-                        <i class='bx bx-cart-add'></i>
-                        <span>PRODUCT ENTRY</span>
-                    </a>
                 </div>
-                <p>
-                    @Html.ActionLink("ADD ITEM", "Create", null, new { @class = "my-link-btn" })
-                </p>
-
             </div>
             <br /> <hr /> <br />
-
-            <div class="my-form-container">
-                @using (Html.BeginForm("Search", "Inventory", FormMethod.Get))
-                {
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="my-form-group">
-                        <div class="col-md-10">
-                            <label for="searchPhrase">Search ID</label>
-                            <input type="text" name="searchPhrase" id="searchPhrase" class="my-form-control" />
-                            <input type="submit" value="Search" class="my-btn" />
-                        </div>
-                    </div>
-                }
-
-                @using (Html.BeginForm("Inv_Index", "Inventory", FormMethod.Get))
-                {
-                    <div class="form-group">
-                        <label for="sortName">Sort By:</label>
-                        <select id="sortName" name="sortName" class="my-form-control">
-                            <option value="NONE">Select Column</option>
-                            <option value="product.PRODID">Product ID</option>
-                            <option value="product.prodName">Product Name</option>
-                            <option value="invt_QOH">Quantity On Hand</option>
-                            <option value="INVT_INDATEAT">Date Created</option>
-                            <option value="PRODPRICEUNIT">Price</option>
-                            <option value="Invt_IsActive">Deactivated</option>
-                        </select>
-                        <input type="submit" value="Sort" class="my-btn" />
-                    </div>
-                }
-
-                @using (Html.BeginForm("Inv_Index", "Inventory", FormMethod.Post))
-                {
-                    <input type="submit" value="Show All" class="my-btn" />
-                }
-
-            </div>
-
             <div class="table-container">
                 <table class="responsive-table">
                     <thead class="table-header">
@@ -108,9 +57,6 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.First().isActive)
-                            </th>
-                            <th colspan="2">
-                                Action
                             </th>
                         </tr>
                     </thead>
@@ -142,18 +88,6 @@
                                 <th>
                                     @(item.isActive == 1 ? "Active" : "Inactive")
                                 </th>
-                                <td>
-                                    @if (item.isActive == 1)
-                                    {
-                                        @Html.ActionLink("Edit", "Edit", new { id = item.prod_Id }, new { @class = "btn-edit" }) @:|
-
-                                        @Html.ActionLink("Delete", "Delete", new { id = item.prod_Id }, new { @class = "btn-delete" });
-                                    }
-                                    else
-                                    {
-                                        @Html.ActionLink("Reactivate", "Reactivate", new { id = item.prod_Id, pages = ViewBag.Pages, sortName = ViewBag.CurrentSort }, new { @class = "btn-reactivate" })
-                                    }
-                                </td>
                             </tr>
                         }
                     </tbody>
@@ -177,19 +111,5 @@
                 }
             </div>
         </div>
-        @Html.PagedListPager(Model, pages => Url.Action("Inv_Index", "Inventory", new { pages, sortName = ViewBag.CurrentSort }),
-           new PagedListRenderOptions
-                {
-                    DisplayLinkToIndividualPages = true,
-                    LinkToFirstPageFormat = "First",
-                    LinkToPreviousPageFormat = "Prev",
-               LinkToNextPageFormat = "Next",
-                    LinkToLastPageFormat = "Last",
-                    MaximumPageNumbersToDisplay = 15
-                })
     </div>
 </section>
-
-
-
-

@@ -61,7 +61,7 @@ namespace ERPSystems.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data Source=&quot;LAPTOP-RAPGCP1J\SQLEXPRESS&quot;; database = &quot;ERPSystem&quot;; integrated security = SSPI;.
+        ///   Looks up a localized string similar to Data Source=SETH\SQLEXPRESS;Initial Catalog=ERPSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False.
         /// </summary>
         internal static string ConnectionString {
             get {

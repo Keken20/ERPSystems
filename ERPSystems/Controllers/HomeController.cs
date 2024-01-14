@@ -62,7 +62,7 @@ namespace ERPSystems.Controllers
                     }
                     else if (type == "Custodian")
                     {
-                        return RedirectToAction("CustodianPurchaseOrder", "CustodianPage");
+                        return RedirectToAction("CustodianQuotation", "CustodianPage");
                     }
                     else
                     {

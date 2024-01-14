@@ -213,6 +213,7 @@ namespace ERPSystem.Data
             catch (Exception ex)
             {
                 return -1;
+                throw ex;
             }
         }
 

@@ -25,6 +25,7 @@
                         <tr>
                             <th>Purchase ID</th>
                             <th>Date Created</th>
+                            <th>Total Item Quantity</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -35,19 +36,23 @@
                             {
                                 foreach (var i in Model.quoteForms)
                                 {
-                                    <tr>
+                                    if (i.Status == "Pending")
+                                    {
+                                        <tr>
                                         <td>@i.PurID</td>
                                         <td>@i.PurDate</td>
+                                        <td>@i.TotalItem</td>
                                         <td>@i.Status</td>
                                         <td>
-                                            <button class="create" data-pur-id="@i.PurID" data-pur-date="@i.PurDate" style="background-color: #d4edda; color: #155724; border: 1px solid; padding: 2px">
-                                                <i class='bx bx-plus'>Create</i>
-                                            </button>
-                                            <button class="delete" data-quote-id="@i.QuoteID" style="background-color: #f8d7da; color: #721c24; border: 1px solid; padding: 2px">
-                                                <i class='bx bx-trash'>Delete</i>
+                                            <button class="create" data-pur-id="@i.PurID" data-pur-date="@i.PurDate">
+                                                <span>
+                                                    <i class="bx bx-plus"></i>
+                                                </span>
+                                                <span>Create QF</span>
                                             </button>
                                         </td>
                                     </tr>
+                                    }
                                 }
                             }
                         }
@@ -60,6 +65,9 @@
     </div>
     <div class="invoice-wrapper show" id="print-area">
         <div class="invoice">
+            <div class="exit">
+                <i class='bx bxs-exit'></i>
+            </div>
             <div class="invoice-container">
                 <div class="invoice-head">
                     <div class="invoice-head-top">
@@ -67,7 +75,7 @@
                             <img src="images/logo.png">
                         </div>
                         <div class="invoice-head-top-right text-end">
-                            <h3>Quotation</h3>
+                            <h3>Quotation Form</h3>
                         </div>
                     </div>
                     <div class="hr"></div>
@@ -76,7 +84,7 @@
                             <p><span class="text-bold">Date</span>:<input id="purdate" readonly style="border:none" /></p>
                         </div>
                         <div class="invoice-head-middle-right text-end">
-                            <p><span class="text-bold">Quotation No</span>:<input type="text" readonly id="purid" style="border:none" /></p>
+                            <p><span class="text-bold">Purchase No# </span><input id="purid" readonly style="border:none" /></p>
                         </div>
                     </div>
                     <div class="hr"></div>
@@ -85,17 +93,17 @@
                             <ul class="ul-group">
                                 <li class='text-bold'>Quotation From:</li>
                                 <li>Company Name</li>
-                                <li><input id="suppname" type="text" /></li>
+                                <li><input id="suppname" type="text" required /></li>
                                 <li>Zip Code</li>
-                                <li><input id="suppzcode" type="text" /></li>
+                                <li><input id="suppzcode" type="text" pattern="[0-9]{4}" placeholder="Enter a 4-digit zip code" required /></li>
                                 <li>Barangay</li>
-                                <li><input id="suppbarangay" type="text" /></li>
+                                <li><input id="suppbarangay" type="text" required /></li>
                                 <li>City</li>
-                                <li><input id="suppcity" type="text" /></li>
+                                <li><input id="suppcity" type="text" required /></li>
                                 <li>Municipality</li>
-                                <li><input id="suppmunicipality" type="text" /></li>
+                                <li><input id="suppmunicipality" type="text" required /></li>
                                 <li>Phone No# </li>
-                                <li><input id="suppphone" type="text" /></li>
+                                <li><input id="suppphone" type="text" pattern="[0-9]{10}" placeholder="Enter a 11-digit phone number" required /></li>
                             </ul>
                         </div>
                     </div>
@@ -111,7 +119,6 @@
                                     <td class="text-bold">Quantity</td>
                                     <td class="text-bold">Unit</td>
                                     <td class="text-bold">UnitPrice</td>
-                                    <td class="text-bold">Discount</td>
                                 </tr>
                             </thead>
                             <tbody id="dataTableBody">
@@ -125,6 +132,10 @@
                         <input type="text" id="subtotal" readonly>
                     </div>
                     <div class="result-group">
+                        <label for="discount">Discount(%):</label>
+                        <input type="number" class="discountInput" oninput="calculate()" min="1" max="100000">
+                    </div>
+                    <div class="result-group">
                         <label for="total">Total:</label>
                         <input type="text" id="total" readonly>
                     </div>
@@ -132,7 +143,7 @@
                 <div class="invoice-foot text-center">
                     <p><span class="text-bold text-center">NOTE:&nbsp;</span>This is computer generated receipt and does not require physical signature.</p>
                     <div class="invoice-btns">
-                        <button type="button" class="invoice-btn" onclick="saveQuotation()" style="background-color: #d4edda; color: #155724;">
+                        <button id="saveButton" type="button" class="invoice-btn" style="background-color: #d4edda; color: #155724;">
                             <span>
                                 <i class="fas fa-check"></i>
                             </span>

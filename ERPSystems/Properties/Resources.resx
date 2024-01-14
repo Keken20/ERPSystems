@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConnectionString" xml:space="preserve">
-    <value>Data Source="LAPTOP-RAPGCP1J\SQLEXPRESS"; database = "ERPSystem"; integrated security = SSPI;</value>
+    <value>Data Source=SETH\SQLEXPRESS;Initial Catalog=ERPSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False</value>
     <comment>SQL Server Connection</comment>
   </data>
 </root>

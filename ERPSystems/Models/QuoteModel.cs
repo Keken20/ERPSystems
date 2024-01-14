@@ -11,5 +11,6 @@ namespace ERPSystems.Models
         public List<QuoteItem> quoteItems { get; set; }
         public List<QuoteFormItem> quoteFormItems { get; set; }
         public List<QuotePrice> quotePrices { get; set; }
+        public List<UpdateInventory> updateInventory { get; set; }
     }
 }

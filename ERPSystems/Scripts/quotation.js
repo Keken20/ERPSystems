@@ -1,7 +1,10 @@
 ﻿var Purid;
+var ProdId;
+var Quantity;
 var supplierInfo;
 var prices;
 var QuoteItems;
+var QuoteId;
 var tableData;
 var rowData;
 var quoteid;
@@ -54,24 +57,18 @@ $(document).ready(function () {
                     row.append($('<td>').text(quoteItemObject.Unit));
 
                     var unitPriceInput = $('<input>').attr({
-                        'type': 'text',
+                        'type': 'number',
                         'style': 'width:80px; text-align: center;',
                         'class': 'unitPriceInput',
-                        'oninput': 'calculate()'
+                        'oninput': 'calculate()',
+                        'min': 1,
+                        'max': 100000
                     });
                     row.append($('<td>').append(unitPriceInput));
 
-                    var discountInput = $('<input>').attr({
-                        'type': 'text',
-                        'style': 'width:80px; text-align: center;',
-                        'class': 'discountInput',
-                        'oninput': 'calculate()'
-                    });
-                    row.append($('<td>').append(discountInput));
-
                     // Add the row to the table body
                     tableBody.append(row);
-                });
+                })
 
                 calculate();
                 console.log('tableData:', tableData);
@@ -84,47 +81,38 @@ $(document).ready(function () {
         $('.invoice-wrapper.show').show();
     });
 
-    // Delete button click
-    $('.delete').on('click', function () {
-        var quoteId = $(this).data('quote-id');
-
-        // Show confirmation dialog
-        var confirmDelete = confirm("Are you sure you want to delete this quotation form?");
-
-        if (confirmDelete) {
-            // Perform the AJAX request to delete the quotation form
-            $.ajax({
-                type: 'POST',
-                url: '/CustodianPage/DeleteQuote',
-                data: { id: quoteId },
-                success: function (response) {
-                    console.log('Received delete response:', response);
-
-                    // Display a message or take appropriate action based on the response
-                    if (response.success) {
-                        alert(response.message);
-
-                        // Check if the form was logically deleted
-                        if (response.isDeleted == true) {
-                            // Optionally, hide or remove the form on the client side
-                            $('.data-quote').hide();
-                        } else {
-                            // Optionally, reload or update the page
-                            location.reload();
-                        }
-                    } else {
-                        alert('Failed to delete quotation form: ' + response.message);
-                    }
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
+    $('#saveButton').on('click', function () {
+        if (validateInputs()) {
+            // Proceed with the save operation
+            saveQuotation();
         } else {
-            // User clicked Cancel on the confirmation dialog
-            console.log('Deletion canceled.');
+            // Handle invalid inputs, e.g., show an error message
+            alert('Please correct the input errors before saving.');
         }
     });
+
+    function validateInputs() {
+        var requiredInputs = [
+            { selector: '#suppname', pattern: /\S/, errorMessage: 'Company name cannot be empty.' },
+            { selector: '#suppzcode', pattern: /^[0-9]{4}$/, errorMessage: 'Invalid zip code. Please enter a 4-digit zip code.' },
+            { selector: '#suppbarangay, #suppcity, #suppmunicipality', pattern: /\S/, errorMessage: 'Address cannot be empty.' },
+            { selector: '#suppphone', pattern: /^(?:\d{7,11})$/, errorMessage: 'Invalid phone number. Please enter a valid phone number.' },
+            { selector: '.unitPriceInput', pattern: /^-?\d{1,6}$/, errorMessage: 'Please enter a valid number between 0 and 100000.' },
+            { selector: '.discountInput', pattern: /^-?\d{1,6}$/, errorMessage: 'Please enter a valid number between 0 and 100000.' }
+        ];
+
+        for (var i = 0; i < requiredInputs.length; i++) {
+            var input = requiredInputs[i];
+            var inputValue = $(input.selector).val().trim();
+
+            if (inputValue === '' || !input.pattern.test(inputValue)) {
+                alert(input.errorMessage);
+                return false;
+            }
+        }
+
+        return true;
+    }
 });
 
 function saveQuotation() {
@@ -189,16 +177,9 @@ function saveQuotationItem() {
     tableData = [];
 
     // Iterate over each row in the table body
-    $('#dataTableBody tr').each(function (index) {
+    $('#dataTableBody tr').each(function () {
         var row = $(this);
-        var rowData = {};
-        var rowCells = row.find('td');
-
-        rowCells.each(function (j) {
-            var cellContent = $(this).find('input').length > 0 ? $(this).find('input').val() : $(this).text();
-            rowData['column' + (j + 1)] = cellContent;
-        });
-
+        var rowData = getRowData(row);  // Use the getRowData function to fetch row data
         tableData.push(rowData);
     });
 
@@ -215,23 +196,32 @@ function saveQuotationItem() {
         data: jsonData,
         contentType: 'application/json',
         success: function (response) {
-            if (response.success && response.quoteid !== undefined) {
-                // Fetched quoteid successfully
-                quoteId = response.quoteid;
-                SupplierName = response.suppname;
-                console.log(`Fetched quoteid successfully: ${response.quoteid}`);
-                alert(response.message);
-            } else {
-                alert('Failed to fetch quoteid. Please try again.');
-            }
+            // Fetched quoteid successfully
+            QuoteId = response.quoteid;
+            SupplierName = response.suppname;
+            console.log(`Fetched quoteid successfully: ${response.quoteid}`);
+            alert(response.message);
+
+            window.location.href = '/CustodianPage/CustodianQuotation';
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.error('AJAX Error:', textStatus, errorThrown);
-            alert('Error fetching quoteid. Please try again.');
+            alert('Data already inserted');
         }
     });
 
     console.log('Table Data:', tableData);
+}
+
+// Updated getRowData function to fetch data correctly
+function getRowData(row) {
+    var rowData = {
+        ProdId: row.find('td:eq(0)').text(),
+        QuoteQuantity: row.find('.quantityInput').val(),
+        QuoteUnit: row.find('td:eq(4)').text(),
+        UnitPrice: row.find('.unitPriceInput').val(),
+    };
+    return rowData;
 }
 
 function clearInputs() {
@@ -248,21 +238,18 @@ function goBack() {
 function calculate() {
     // Calculate subtotal for each row and update the total
     var totalSubtotal = 0;
-    var totalDiscount = 0;
 
     $('[class^="quantityInput"]').each(function (index) {
         var quantity = parseFloat($(this).val()) || 0;
         var unitPrice = parseFloat($('[class^="unitPriceInput"]').eq(index).val()) || 0;
-        var discount = parseFloat($('[class^="discountInput"]').eq(index).val()) || 0;
-        var discountPercent = discount / 100;
 
         var subtotal = quantity * unitPrice;
         totalSubtotal += subtotal;
-
-        // Calculate discount for each row and update total discount
-        var rowDiscount = subtotal * discountPercent;
-        totalDiscount += rowDiscount;
     });
+
+    // Calculate discount for the entire purchase
+    var totalDiscountPercent = parseFloat($('[class^="discountInput"]').val()) || 0;
+    var totalDiscount = totalSubtotal * (totalDiscountPercent / 100);
 
     // Update result inputs
     $('#subtotal').val(totalSubtotal.toFixed(2));
@@ -271,4 +258,30 @@ function calculate() {
     // Calculate total after applying discount
     var total = totalSubtotal - totalDiscount;
     $('#total').val(total.toFixed(2));
+}
+
+
+function validateInputs() {
+    var requiredInputs = [
+        '#suppname',
+        '#suppzcode',
+        '#suppbarangay',
+        '#suppcity',
+        '#suppmunicipality',
+        '#suppphone',
+        '.unitPriceInput',
+        '.discountInput'
+    ];
+
+    for (var i = 0; i < requiredInputs.length; i++) {
+        var inputId = requiredInputs[i];
+        var inputValue = $(inputId).val().trim();
+
+        if (inputValue === '') {
+            alert('Please fill in all required fields.');
+            return false;
+        }
+    }
+
+    return true;
 }

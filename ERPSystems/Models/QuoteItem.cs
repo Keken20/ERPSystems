@@ -7,6 +7,7 @@ namespace ERPSystems.Models
 {
     public class QuoteItem
     {
+        public int QuoteId { get; set; }
         public int PurId { get; set; }
         public int ProdId { get; set; }
         public string ProdName { get; set; }

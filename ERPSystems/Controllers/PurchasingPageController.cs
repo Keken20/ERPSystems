@@ -110,7 +110,7 @@ namespace ERPSystems.Controllers
                 {
                     inventory.Add(new Inventory
                     {
-                        ProdQoh = int.Parse(dr["totalStock"].ToString())
+                        ProdQoh = int.Parse(dr["INVT_QOH"].ToString())
                     });
                 }
                 return (inventory);
@@ -545,7 +545,6 @@ namespace ERPSystems.Controllers
                         ProdDescription = dr["ProdDescription"].ToString(),
                         ProdName = dr["ProdName"].ToString()
                     });
-
                 }
                 con.Close();
                 return (quotationitems);

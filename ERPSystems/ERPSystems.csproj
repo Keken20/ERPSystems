@@ -177,6 +177,7 @@
     <Compile Include="Models\RequestModel.cs" />
     <Compile Include="Models\Supplier.cs" />
     <Compile Include="Models\SupplierInfo.cs" />
+    <Compile Include="Models\UpdateInventory.cs" />
     <Compile Include="Models\ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -273,6 +274,7 @@
     <Content Include="Scripts\purchaseorder.js" />
     <Content Include="Scripts\quotation.js" />
     <Content Include="Scripts\quotationbehavior.js" />
+    <Content Include="Scripts\receivepo.js" />
     <Content Include="Scripts\register.js" />
     <Content Include="Scripts\request.js" />
     <Content Include="Scripts\requestlist.js" />
@@ -348,10 +350,8 @@
     <Content Include="Views\RequestorPage\AddRequisition.cshtml" />
     <Content Include="Views\RequestorPage\RequestorDashboard.cshtml" />
     <Content Include="Views\RequestorPage\DeleteRequisition.cshtml" />
-    <Content Include="Views\CustodianPage\CustodianDashboard.cshtml" />
     <Content Include="Views\CustodianPage\CustodianInventory.cshtml" />
     <Content Include="Views\CustodianPage\CustodianQuotation.cshtml" />
-    <Content Include="Views\CustodianPage\View.cshtml" />
     <Content Include="Views\Inventory\ALGORTIHM.cshtml" />
     <Content Include="Views\Inventory\asdasdasd.cshtml" />
   </ItemGroup>
